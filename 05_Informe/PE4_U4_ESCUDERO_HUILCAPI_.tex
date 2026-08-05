@@ -44,11 +44,13 @@
 
     \textbf{\large UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.5cm]
 
-    \includegraphics[width=4cm]{figures/logo.png}\\[0.5cm]
+    \includegraphics[width=4cm]{logo.png}\\[0.5cm]
 
     \textbf{INGENIERÍA DE REQUERIMIENTOS}\\[0.5cm]
 
+\textbf{Link del Github}\\[0.5cm]
 
+\url{https://github.com/equinteroj/ISR401-PFC-ERS-EQUIPO-I.git}
 
     \textbf{TEMA:}\\[0.3cm]
 
@@ -76,6 +78,7 @@
 
     ING. GUERRERO ULLOA GLEISTON CICERON\\[0.5cm]
 
+ ULTIMO COMMIT FECHA MIERCOLES 5 DE JULIO 23:00 PM
 
     \vfill
 
@@ -326,6 +329,242 @@ Esfuerzo total & 10,5 horas-persona & Costo contenido frente al beneficio: cada 
 \bottomrule
 \caption{Métricas de la inspección Fagan e interpretación.}
 \end{longtable}
+
+% ============================================================
+% 5. CORRECCIONES APLICADAS
+% ============================================================
+\section{Correcciones aplicadas}
+
+Se corrigió el 100\,\% de los defectos críticos y mayores (11 de 16). Los cinco defectos menores
+restantes se documentan como pendientes justificados: no comprometen la validez funcional del ERS
+y se programan para la Entrega 4 (2B).
+
+\begin{longtable}{p{0.7cm}p{5.3cm}p{5.3cm}p{1.5cm}}
+\toprule
+\textbf{ID} & \textbf{Antes} & \textbf{Después} & \textbf{Req.} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Antes} & \textbf{Después} & \textbf{Req.} \\
+\midrule
+\endhead
+D-01 & ``\dots\ el sistema rechaza el registro e indica la inconsistencia.'' & ``\dots\ el sistema rechaza el registro, lo marca en estado \emph{observado} y notifica a la persona administradora para su resolución antes de reintentar el registro.'' & RF-23 \\
+D-02 & Sin regla de recálculo entre RF-27 y RF-38. & Se añade postcondición a RF-27: ``Si el remanente arrastrado se ejecuta posteriormente como labor no presupuestada (RF-38), el sistema conserva su vínculo con la meta original únicamente a efectos de reporte, sin computarlo en el porcentaje de cumplimiento.'' & RF-27, RF-38 \\
+D-04 & Sin caso de imagen con múltiples deficiencias. & Se añade excepción E3 a CU-02: ``Si el modelo detecta más de una deficiencia con confianza comparable, el sistema presenta ambas ordenadas por confianza y solicita a la persona usuaria priorizar la corrección.'' & RF-08, CU-02 \\
+D-05 & Sin plan de triangulación declarado. & Se incorpora al plan de trabajo pendiente (\S7.5 del ERS) la actividad: ``Obtener una segunda fuente independiente para RF-11, RF-23, RF-25, RF-32, RF-33 y RF-34 antes del cierre de la Entrega 4.'' & RF-11, RF-23, RF-25, RF-32, RF-33, RF-34 \\
+D-06 & Sin política de bloqueo. & Se añade a RF-01: ``Tras cinco intentos fallidos consecutivos, el sistema bloquea la cuenta por 15 minutos y registra el evento en bitácora de seguridad (RNF-13).'' & RF-01 \\
+D-07 & RD-02 y RD-05 sin mecanismo de conciliación. & Se crea RF-40 mediante RFC-01 (\S6.1) como modo de operación degradada; RD-05 se reformula: ``\dots\ requiere conectividad para inferencia en línea; ante indisponibilidad prolongada, el cliente opera con los últimos umbrales sincronizados (RF-40).'' & RD-02, RD-05, RF-40 \\
+D-08 & Sin plazo de propagación de revocación. & Se añade a RL-03: ``La revocación del consentimiento de geolocalización se propaga al backend en un plazo máximo de 60 segundos desde su registro en el dispositivo.'' & RF-15, RL-03 \\
+D-09 & CU-06 flujo B sin HU/CA. & Se añade HU-20 / CA-20: ``Como técnico de la extractora, quiero que el sistema advierta sobremadurez, para anticipar el incremento de acidez del aceite.'' & CU-06 \\
+D-11 & Riesgo de bloqueo no documentado. & Se añade a \S6.3 del ERS (desviación D-04 del prototipo): ``RF-10 se declara bloqueante de RF-21 en el plan de incorporación de la Entrega 4; ambos se implementan en el mismo incremento.'' & RF-10, RF-21 \\
+D-12 & RNF-11 sin política de concurrencia. & Se reformula RNF-11 mediante RFC-02 (\S6.2): se añade política \emph{last-write-wins} con bitácora de conflicto y notificación al supervisor que efectuó el registro delegado. & RNF-11, RF-28 \\
+D-15 & RF-14 sin manejo de interrupción por batería. & Se añade excepción E3 a CU-03: ``Si el dispositivo se apaga antes del cierre de jornada, el sistema conserva las marcaciones ya sincronizadas y solicita confirmar manualmente el tramo no registrado en el siguiente inicio de sesión.'' & RF-14, CU-03 \\
+\bottomrule
+\caption{Correcciones aplicadas a los 11 defectos críticos y mayores (antes/después).}
+\label{tab:correcciones}
+\end{longtable}
+
+\noindent\textbf{Defectos menores pendientes, justificados.} D-03 (perfiles con limitación
+sensorial en la prueba de RNF-08), D-10 (desempate de tarifas traslapadas), D-13 (auditoría del
+filtro de exportación) y D-14 (traza de Agrocalidad a un RL) se difieren a la Entrega 4 porque su
+corrección requiere una decisión de negocio (política de tarifas, alcance del módulo de
+auditoría) que excede el margen de esta práctica y no compromete la operación del MVP declarada
+en \S6 del ERS. D-16 se resuelve administrativamente: se fija como responsable al analista líder
+y como plazo el cierre de la Entrega 4 (2B).
+
+% ============================================================
+% 6. GESTIÓN DEL CAMBIO Y CCB
+% ============================================================
+\section{Gestión del cambio y Change Control Board}
+
+Se tramitaron tres RFC de naturaleza distinta. RFC-01 nace directamente del defecto crítico D-07
+detectado en la inspección; RFC-02 nace del defecto crítico D-12; RFC-03 responde a un escenario
+normativo publicado por la cátedra sobre el plazo de retención de datos de geolocalización
+laboral, no derivado de la inspección.
+
+\subsection{RFC-01 --- Alcance: modo de operación degradada del componente de IA}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-01 / 04-08-2026 / Villafuerte Rosero Allan Noe (analista líder) \\
+Requisito afectado & RD-02, RD-05 \\
+Descripción & Incorporar el requisito funcional RF-40: ``Modo de operación degradada sin inferencia remota'', que permite al cliente móvil operar con los últimos umbrales de variedad y de madurez sincronizados cuando el servicio de IA es inalcanzable por más de 4 horas continuas. \\
+Justificación de negocio & Sin este mecanismo, RD-02 (operación 100\,\% offline) y RD-05 (inferencia centralizada en la nube) son mutuamente incompatibles en la práctica: el 74,2\,\% del personal no tiene conectividad permanente (EV-12), por lo que la ausencia de un modo degradado deja sin diagnóstico útil a la mayoría de las jornadas de campo. \\
+Requisitos impactados (matriz) & Directos: RD-02, RD-05, RNF-04, RNF-11, RNF-17. Indirectos (vía CU-01, CU-02, CU-06, que incluyen obligatoriamente a CU-18): RF-07, RF-08, RF-21, RNF-16. \\
+Artefactos impactados & CU-01, CU-02, CU-06; clase \texttt{Variedad} y \texttt{Diagnostico} del diagrama de clases; mockup MU-03; componente ``Orquestador de IA'' del diagrama de componentes. \\
+Costo estimado & 21 horas-persona (cach\'e local de umbrales, lógica de expiración de 4 horas, indicador visual de resultado ``no verificado en línea''). \\
+Riesgo & Un diagnóstico con umbrales desactualizados podría inducir a error si la variedad del lote cambia entre sincronizaciones; se mitiga marcando todo resultado degradado como ``no verificado'' en la interfaz. \\
+Recomendación técnica & Aprobar; el costo es bajo frente al riesgo de que el 74,2\,\% del personal quede sin la función mejor valorada del cuestionario (RF-07, 4,27/5). \\
+\bottomrule
+\caption{RFC-01 -- Modo de operación degradada.}
+\end{longtable}
+
+\subsection{RFC-02 --- Calidad: política de concurrencia de RNF-11}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-02 / 04-08-2026 / Rizzo Vélez Edson Nagib (verificador) \\
+Requisito afectado & RNF-11 \\
+Descripción & Modificar RNF-11 para incorporar una política explícita de resolución de conflictos de sincronización concurrente: \emph{last-write-wins} sobre el campo \texttt{fechaRegistro}, con bitácora de conflicto accesible al supervisor que efectuó el registro delegado (RF-35). \\
+Justificación de negocio & El registro delegado (RF-35) habilita a un supervisor a registrar en nombre de un trabajador sin dispositivo propio; si ese mismo trabajador consigue luego un dispositivo prestado y registra el mismo avance, RNF-11 no define cuál de los dos registros prevalece, arriesgando una duplicación silenciosa del pago por avance. \\
+Requisitos impactados (matriz) & Directos: RNF-11, RF-28, RF-35. Indirectos: RF-29 (cálculo de remuneración), RF-37 (liquidación semanal). \\
+Artefactos impactados & CU-04 (flujo alternativo A, registro delegado); clase \texttt{RegistroAvance}; componente ``Motor de sincronización''. \\
+Costo estimado & 13 horas-persona. \\
+Riesgo & Bajo; la política \emph{last-write-wins} es estándar en sistemas \emph{offline-first} y no introduce dependencia nueva. \\
+Recomendación técnica & Aprobar sin condiciones. \\
+\bottomrule
+\caption{RFC-02 -- Política de concurrencia de sincronización.}
+\end{longtable}
+
+\subsection{RFC-03 --- Restricción/normativa: plazo de retención de datos de geolocalización}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-03 / 04-08-2026 / Alcívar Vélez Anderson Adonis (apoyo repositorio), a partir del escenario normativo n.\textordmasculine\ 2 publicado en el SGA sobre plazos de retención de datos laborales de geolocalización. \\
+Requisito afectado & RL-06, RNF-14 \\
+Descripción & Incorporar la restricción RD-11: ``Los datos de geolocalización individual (marcaciones GPS, recorridos) se purgan automáticamente a los 12 meses de su captura, conservando únicamente los agregados no identificables usados en RF-16 (evaluación de desempeño).'' \\
+Justificación de negocio & El principio de minimización de la LOPDP (Art.~10, ya trazado en RL-02) exige limitar tanto el alcance como la duración del tratamiento; el ERS v3.0 no fija un plazo de retención para los datos de geolocalización, lo que constituye un vacío frente al escenario normativo evaluado por la cátedra. \\
+Requisitos impactados (matriz) & Directos: RL-06, RNF-14, RD-11 (nuevo). Indirectos: RF-15, RF-14, RF-16. \\
+Artefactos impactados & Componente ``Bitácora de acceso''; clase \texttt{Marcacion} y \texttt{Recorrido}; tarea programada de purga en el backend (nuevo componente no modelado previamente). \\
+Costo estimado & 8 horas-persona. \\
+Riesgo & Si la purga elimina datos necesarios para una auditoría de calidad en curso (RF-24), podría perderse evidencia; se mitiga excluyendo de la purga los recorridos vinculados a una calificación desfavorable de la extractora hasta el cierre de esa auditoría. \\
+Recomendación técnica & Aprobar; es de cumplimiento obligatorio y de costo bajo. \\
+\bottomrule
+\caption{RFC-03 -- Plazo de retención de datos de geolocalización.}
+\end{longtable}
+
+\subsection{Acta del Change Control Board}
+
+\noindent\textbf{Fecha:} 04 de agosto de 2026. \textbf{Asistentes:} Villafuerte Rosero Allan Noe
+(Presidente), Arboleda Yanza Francisco Javier (Representante del cliente, en simulación del rol
+de Administrador general), Huilcapi León Denisses Fabiola (Analista), Rizzo Vélez Edson Nagib
+(Desarrollador), Macías Herrera Josthyn Esteban (Secretario, redacción del acta), Alcívar Vélez
+Anderson Adonis (Verificador de la matriz de trazabilidad durante la sesión).
+
+\noindent\textbf{Agenda:} (1) presentación de RFC-01 a RFC-03 por su solicitante; (2)
+deliberación; (3) votación; (4) definición de responsables y plazos; (5) cierre de versión.
+
+\begin{longtable}{p{1.6cm}p{5.7cm}p{2.4cm}p{4cm}}
+\toprule
+\textbf{RFC} & \textbf{Deliberación resumida} & \textbf{Decisión} & \textbf{Responsable / plazo} \\
+\midrule
+\endhead
+RFC-01 & El representante del cliente valora la mejora pero advierte que el modo degradado no debe implementarse en el MVP actual (5.\S6.1 del ERS), dado que el prototipo aún no integra inferencia real. El desarrollador confirma que el costo (21 h-p) es asumible en la Entrega 4. & \textbf{Aprobado con condiciones}: se incorpora al ERS y a la matriz de trazabilidad, pero su implementación se programa para la Entrega 4, no para el MVP vigente. & Rizzo Vélez (desarrollador) / cierre de Entrega 4 (2B) \\
+RFC-02 & Sin objeciones; el analista señala que la política \emph{last-write-wins} es coherente con el patrón ya usado en RF-04 (flujo alternativo B, sin conectividad). & \textbf{Aprobado} & Rizzo Vélez (desarrollador) / próxima iteración de \texttt{RegistroAvance} \\
+RFC-03 & El representante del cliente confirma que la organización no ha definido internamente un plazo de retención; el analista recuerda que RL-06 (derecho de eliminación) ya obliga a un mecanismo de purga, por lo que RD-11 lo hace explícito y automático. & \textbf{Aprobado} & Alcívar Vélez (repositorio) y Huilcapi León (documentación) / incorporación inmediata al ERS \\
+\bottomrule
+\caption{Acta resumida del Change Control Board del 04-08-2026.}
+\end{longtable}
+
+\noindent\textbf{Versión resultante.} Las tres RFC aprobadas se incorporan en una nueva versión
+del ERS, \textbf{v3.1}, publicada como línea base \texttt{baseline-v3.1} (\S8). El historial de
+revisiones del documento se actualiza con la entrada correspondiente en el
+\texttt{CHANGELOG.md} del repositorio (Anexo E).
+
+\noindent\textbf{Firman:} Villafuerte Rosero A.\ N., Huilcapi León D.\ F., Rizzo Vélez E.\ N.,
+Macías Herrera J.\ E., Arboleda Yanza F.\ J., Alcívar Vélez A.\ A.
+
+% ============================================================
+% 7. TRAZABILIDAD EN HERRAMIENTA CASE
+% ============================================================
+\section{Trazabilidad en herramienta CASE}
+
+Se construyó el tablero \textbf{Jira} del proyecto \texttt{SIMPA} (clave de proyecto
+\texttt{SIM}), con acceso otorgado a los seis integrantes y al docente.
+
+\subsection{Estructura del backlog}
+
+\begin{center}
+\begin{tabular}{p{3.2cm}p{9.5cm}}
+\toprule
+\textbf{Epic} & \textbf{Alcance} \\
+\midrule
+SIM-E1 Estructura productiva & RF-01 a RF-03, RF-10 (autenticación, lotes, personal, variedades) \\
+SIM-E2 Planificación y labores & RF-04, RF-26 a RF-29, RF-35 a RF-39 \\
+SIM-E3 Diagnóstico asistido por IA & RF-05, RF-07 a RF-09, RF-12, RF-21, RF-22, RF-40 (RFC-01) \\
+SIM-E4 Calidad y relación con la extractora & RF-23 a RF-25, RF-30 a RF-33 \\
+SIM-E5 Reportes y trazabilidad histórica & RF-06, RF-11, RF-13 a RF-20 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Bajo las cinco épicas se crearon 20 \emph{Stories}, una por requisito funcional Must o
+Should representativo (RF-01, RF-02, RF-04, RF-05, RF-07, RF-08, RF-10, RF-12, RF-13, RF-14,
+RF-15, RF-19, RF-21, RF-22, RF-23, RF-26, RF-28, RF-30, RF-35, RF-40), superando el mínimo de 15.
+Se agregaron \emph{Sub-tasks} de criterio de aceptación (mínimo 2 cada una) para cinco historias:
+SIM-4 (RF-04 / HU-04), SIM-7 (RF-07 / HU-06), SIM-11 (RF-14 / HU-11), SIM-16 (RF-26 / HU-16) y
+SIM-19 (RF-35 / HU-19).
+
+\subsection{Campos personalizados}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Ejemplo} \\
+\midrule
+Prioridad MoSCoW & Lista desplegable & Must / Should / Could \\
+Fuente del requisito & Texto corto (ID de evidencia) & EV-01, EV-12, EV-13 \\
+Estado de verificación & Lista desplegable (campo adicional valorado) & Pendiente / Verificado en inspección / Corregido \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Trazabilidad bidireccional y evidencias}
+
+Cada \emph{Story} enlaza hacia atrás, mediante el campo ``Fuente del requisito'' y una etiqueta
+\texttt{stakeholder:*}, al participante o documento de origen (por ejemplo,
+\texttt{stakeholder:ENTR-04} para RF-21); y hacia adelante, mediante enlaces \emph{relates to} /
+\emph{is tested by}, al caso de uso, la clase del diagrama y el caso de prueba correspondientes.
+Los tres requisitos que la inspección marcó como huérfanos de artefacto (RF-03, RF-27, RF-34, sin
+mockup en el ERS base) se reportan explícitamente en el tablero con la etiqueta
+\texttt{sin-mockup} en lugar de omitirse.
+
+\noindent\textbf{Evidencias.} Se referencian en el repositorio, dentro de
+\texttt{04\_Trazabilidad/capturas/}: captura del tablero completo
+(\texttt{tablero\_completo.png}), detalle de tres issues con sus enlaces visibles
+(\texttt{SIM-7\_detalle.png}, \texttt{SIM-14\_detalle.png}, \texttt{SIM-19\_detalle.png}) y panel
+de estadísticas (\texttt{panel\_estadisticas.png}). \emph{El equipo debe sustituir estos
+marcadores por sus capturas reales del tablero antes de la entrega final}, conforme al criterio
+de admisión A2 de la guía. La exportación a CSV del backlog se referencia como
+\texttt{04\_Trazabilidad/backlog\_export.csv} (Anexo D).
+
+\subsection{Matriz de trazabilidad (vista de 16 filas)}
+
+\begin{longtable}{p{2.6cm}p{1.1cm}p{1.1cm}p{3.4cm}p{3.6cm}}
+\toprule
+\textbf{Stakeholder} & \textbf{RF} & \textbf{CU} & \textbf{Clase / Módulo} & \textbf{Prueba} \\
+\midrule
+\endhead
+Administrador general (EV-01) & RF-01 & CU-11 & \texttt{Usuario.autenticar()} & PT-01 Bloqueo tras 5 intentos (D-06) \\
+Administrador general (EV-01) & RF-02 & CU-12 & \texttt{Lote} & PT-02 Alta de lote y selección en labor \\
+Asistente admin. (EV-07) & RF-04 & CU-04 & \texttt{Labor}, \texttt{RegistroAvance} & PT-03 Registro sin conexión (RNF-11) \\
+Trabajador agrícola (EV-05) & RF-05 & CU-15 & \texttt{Palma.marcarAfectada()} & PT-04 Filtro de incidencia abierta \\
+Asistente admin. (EV-07) & RF-07 & CU-01 & Orquestador de IA / \texttt{DiagnosticoPlaga} & PT-05 Confianza insuficiente (flujo B) \\
+Asesor técnico (EV-02) & RF-08 & CU-02 & \texttt{DiagnosticoNutricional} & PT-06 Múltiples deficiencias (D-04) \\
+Asesor técnico (EV-04) & RF-10 & CU-12 & \texttt{Variedad} & PT-07 Umbral por variedad \\
+Administrador general (EV-01) & RF-12 & CU-16 & \texttt{Alerta} & PT-08 Alerta ante diagnóstico positivo \\
+Jefe polinización (EV-03) & RF-13 & CU-03 & \texttt{RegistroPolinizacion} & PT-09 Estado de antesis \\
+Jefe polinización (EV-03) & RF-14 & CU-03 & \texttt{Marcacion.esPrecisa()} & PT-10 Interrupción por batería (D-15) \\
+Administrador general (EV-01) & RF-15 & CU-03 & \texttt{Recorrido} & PT-11 Consentimiento revocado (D-08) \\
+Administrador general (EV-11) & RF-19 & CU-05 & \texttt{Reporte} & PT-12 Consolidado semanal exportable \\
+Téc. extractora (EV-04) & RF-21 & CU-06 & \texttt{ClasificacionMadurez.clasificar()} & PT-13 Umbral guineensis vs.\ híbrido \\
+Administrador (EV-04, EV-08) & RF-22 & CU-06 & \texttt{Lote.porcentajeFrutaVerde()} & PT-14 Alerta preventiva de despacho \\
+Téc. extractora (EV-04) & RF-23 & CU-10 & \texttt{CalificacionExtractora} & PT-15 Inconsistencia bruto-tara-neto (D-01) \\
+Jefe de campo (EV-12) & RF-35 & CU-04 & \texttt{Labor.registroDelegado} & PT-16 Concurrencia de sincronización (D-12) \\
+\bottomrule
+\caption{Matriz de trazabilidad extendida (16 filas, coherente con el tablero Jira).}
+\label{tab:matriz-case}
+\end{longtable}
+
 
 
 \end{document}
