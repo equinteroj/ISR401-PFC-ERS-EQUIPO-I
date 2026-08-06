@@ -1,0 +1,46 @@
+﻿Issue key,Issue type,Summary,Priority (MoSCoW),Fuente (EV),Estado de verificación,Epic Link,Linked issues
+KAN-15,Historia,RF-04 - Registro de labores agrícolas,Must,Stakeholder,Validado,KAN-1,KAN-1; KAN-38; KAN-39
+KAN-1,Epic,EPIC-01:Gestión de Usuarios,,,,,KAN-15; KAN-6; KAN-7; KAN-8; KAN-9
+KAN-2,Epic,EPIC-02:Planificación de Labores,,,,,KAN-10; KAN-11; KAN-12; KAN-13; KAN-14
+KAN-3,Epic,EPIC-03:Registro Operativo,,,,,KAN-16; KAN-17; KAN-18; KAN-19
+KAN-4,Epic,EPIC-04:Diagnóstico Inteligente,,,,,KAN-20; KAN-21; KAN-22; KAN-23
+KAN-5,Epic,EPIC-05:Reportes e Historial,,,,,KAN-24; KAN-25
+KAN-6,Historia,RF-01 - Autenticación y control de acceso,Must,Stakeholder,Validado,KAN-1,KAN-1; KAN-26; KAN-27
+KAN-7,Historia,RF-02 - Gestión de plantaciones y lotes,Must,Stakeholder,Validado,KAN-1,KAN-1; KAN-28; KAN-29
+KAN-8,Historia,RF-03 - Gestión de personal y equipos,Must,Stakeholder,Validado,KAN-1,KAN-1; KAN-30; KAN-31
+KAN-9,Historia,RF-10 - Gestión de variedades de palma,Should,Documento,Validado,KAN-1,KAN-1; KAN-32; KAN-33
+KAN-10,Historia,RF-26 - Planificación semanal de labores,Must,Stakeholder,Validado,KAN-2,KAN-2; KAN-34; KAN-35
+KAN-16,Historia,RF-28 - Registro de avance,Must,Stakeholder,Validado,KAN-3,KAN-3; KAN-40; KAN-41
+KAN-17,Historia,RF-29 - Consulta de avance,Should,Stakeholder,Validado,KAN-3,KAN-3; KAN-42; KAN-43
+KAN-18,Historia,RF-30 - Reporte de incidencias,Must,Stakeholder,Validado,KAN-3,KAN-3; KAN-44; KAN-45
+KAN-19,Historia,RF-31 - Lista de pendientes,Should,Documento,Pendiente,KAN-3,KAN-3
+KAN-20,Historia,RF-07 - Detección de plagas,Must,Stakeholder,Validado,KAN-4,KAN-4
+KAN-21,Historia,RF-08 - Diagnóstico nutricional,Must,Stakeholder,Validado,KAN-4,KAN-4
+KAN-22,Historia,RF-09 - Ficha técnica de plagas,Should,Documento,Pendiente,KAN-4,KAN-4
+KAN-23,Historia,RF-21 - Clasificación de madurez,Should,Stakeholder,Validado,KAN-4,KAN-4
+KAN-24,Historia,RF-19 - Generación de reportes,Must,Stakeholder,Validado,KAN-5,KAN-5
+KAN-25,Historia,RF-20 - Historial de actividades,Should,Documento,Validado,KAN-5,KAN-5
+KAN-11,Historia,RF-27 - Arrastre de labores incompletas,Should,Documento,Validado,KAN-2,KAN-2; KAN-36; KAN-37
+KAN-12,Historia,RF-34 - Solicitud de insumos,Should,Stakeholder,Validado,KAN-2,KAN-2
+KAN-13,Historia,RF-36 - Catálogo de labores,Could,Documento,Pendiente,KAN-2,KAN-2
+KAN-14,Historia,RF-37 - Liquidación semanal,Should,Stakeholder,Pendiente,KAN-2,KAN-2
+KAN-26,Subtarea,Validar usuario y contraseña,,,,KAN-1,KAN-6
+KAN-27,Subtarea,Mostrar mensaje cuando las credenciales sean incorrectas,,,,KAN-1,KAN-6
+KAN-28,Subtarea,Registrar una nueva plantación o lote,,,,KAN-1,KAN-7
+KAN-29,Subtarea,Editar y eliminar plantaciones registradas,,,,KAN-1,KAN-7
+KAN-30,Subtarea,Editar y eliminar plantaciones registradas,,,,KAN-1,KAN-8
+KAN-31,Subtarea,Asignar personal a equipos de trabajo,,,,KAN-1,KAN-8
+KAN-32,Subtarea,Asignar personal a equipos de trabajo,,,,KAN-1,KAN-9
+KAN-33,Subtarea,Consultar y actualizar variedades registradas,,,,KAN-1,KAN-9
+KAN-34,Subtarea,Registrar planificación semanal,,,,KAN-2,KAN-10
+KAN-35,Subtarea,Registrar planificación semanal,,,,KAN-2,KAN-10
+KAN-36,Subtarea,Registrar planificación semanal,,,,KAN-2,KAN-11
+KAN-37,Subtarea,Registrar planificación semanal,,,,KAN-2,KAN-11
+KAN-38,Subtarea,Registrar labor realizada,,,,KAN-1,KAN-15
+KAN-39,Subtarea,Validar datos obligatorios,,,,KAN-1,KAN-15
+KAN-40,Subtarea,Registrar avance diario,,,,KAN-3,KAN-16
+KAN-41,Subtarea,Actualizar porcentaje de ejecución,,,,KAN-3,KAN-16
+KAN-42,Subtarea,Registrar personal de trabajo,,,,KAN-3,KAN-17
+KAN-43,Subtarea,Asignar personal a equipos de trabajo,,,,KAN-3,KAN-17
+KAN-44,Subtarea,Registrar incidencia con fotografía,,,,KAN-3,KAN-18
+KAN-45,Subtarea,Notificar la incidencia al supervisor,,,,KAN-3,KAN-18
