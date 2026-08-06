@@ -1,0 +1,313 @@
+% =====================================================================
+% Anexo A - Listas de verificacion de inspeccion (metodo Fagan)
+% PE4 - Unidad IV - ISR-401 - Sistema SIMPA - Equipo EHQ
+% Compilar: pdflatex AnexoA_checklists.tex   (dos pasadas)
+% =====================================================================
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[margin=2cm,top=2.4cm,bottom=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{ragged2e}
+\usepackage[table]{xcolor}
+\usepackage{lastpage}
+
+\definecolor{gris}{gray}{0.90}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Ingeniería de Requisitos (ISR-401) --- SIMPA}
+\fancyhead[R]{\small Anexo A --- PE4 Unidad IV --- Equipo EHQ}
+\fancyfoot[C]{\small Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.08}
+
+% ---- Encabezado de cada ficha ---------------------------------------
+\newcommand{\ficha}[5]{%
+\begin{center}\small
+\begin{tabularx}{\textwidth}{|>{\bfseries}p{3.2cm}|X|>{\bfseries}p{2.6cm}|p{4.2cm}|}
+\hline
+\rowcolor{gris}\multicolumn{4}{|l|}{\bfseries Lista de verificación de inspección --- Anexo A (ISO/IEC/IEEE 29148:2018, §6.4)}\\
+\hline
+Inspector & #1 & Rol & #2 \\
+\hline
+Documento & ERS SIMPA v3.0 (Entrega 2A) & Fecha / hora & #3 \\
+\hline
+Alcance revisado & \multicolumn{3}{p{12.6cm}|}{#4} \\
+\hline
+Defectos reportados & \multicolumn{3}{p{12.6cm}|}{#5} \\
+\hline
+\end{tabularx}
+\end{center}}
+
+% ---- Cabecera de la tabla de verificacion ---------------------------
+\newcommand{\cabecera}{%
+\rowcolor{gris}\textbf{Propiedad} & \textbf{Pregunta de verificación} & \textbf{Requisito revisado} & \textbf{Cumple} & \textbf{Evidencia / observación}\\}
+
+% ---- Bloque de firma -------------------------------------------------
+\newcommand{\firma}[2]{%
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{c@{\hspace{2.5cm}}c}
+\rule{6cm}{0.4pt} & \rule{5cm}{0.4pt}\\
+{\small #1} & {\small Fecha y hora: #2}\\
+{\small Firma del inspector} & {\small Marca temporal de la preparación}\\
+\end{tabular}
+\end{center}}
+
+\begin{document}
+
+% =====================================================================
+% PORTADA / RESUMEN
+% =====================================================================
+\begin{center}
+{\large\bfseries UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[2pt]
+{\small Facultad de Ciencias de la Computación --- Carrera de Software (Rediseño)}\\[10pt]
+{\Large\bfseries Anexo A --- Listas de verificación de inspección}\\[4pt]
+{\normalsize Práctica Experimental PE4 --- Unidad IV --- Ingeniería de Requisitos (ISR-401)}\\[2pt]
+{\normalsize Sistema SIMPA --- ERS v3.0 (Entrega 2A) --- Equipo EHQ}\\[2pt]
+{\small Docente: Ing. Gleiston Cicerón Guerrero Ulloa, PhD --- Quevedo, 04 de agosto de 2026}
+\end{center}
+
+\vspace{6pt}
+\textbf{Objeto del anexo.} Este anexo reúne las cuatro copias individuales de la lista de
+verificación completadas durante la \emph{preparación individual} del Paso 1 de la guía PE4
+(método Fagan), previas a la reunión de inspección del 04/08/2026 (10:00--11:25, 85 minutos).
+Cada copia recorre las seis propiedades exigidas por la guía --- ambigüedad, completitud,
+consistencia, verificabilidad, trazabilidad y factibilidad --- sobre las secciones 2, 3 y
+4.1--4.2 del ERS SIMPA v3.0 (40 páginas efectivas, páginas 12 a 51 del documento base).
+Los defectos marcados con \textbf{N} se trasladaron al registro consolidado del Anexo B
+(D-01 a D-16). Conforme al criterio A3, y por tratarse de un equipo de tres integrantes,
+el cuarto rol (Inspector 2) es rotativo y lo asume la integrante Escudero Plaza en una
+segunda pasada independiente sobre el mismo alcance.
+
+\vspace{4pt}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{P{4.6cm} P{3.1cm} C{1.9cm} C{2.0cm} C{2.0cm} X}
+\toprule
+\textbf{Inspector} & \textbf{Rol} & \textbf{Fecha / hora} & \textbf{Defectos reportados} & \textbf{Hallazgos únicos} & \textbf{Ficha}\\
+\midrule
+Escudero Plaza María del Rosario & Moderadora & 04/08/2026 08:20 & 7 & 5 & p.\ 2\\
+Huilcapi León Denisses Fabiola & Lectora & 04/08/2026 08:45 & 6 & 3 & p.\ 3\\
+Quintero Gende Erick Jahir & Inspector 1 & 04/08/2026 09:15 & 8 & 5 & p.\ 4\\
+Escudero Plaza María del Rosario & Inspector 2 (rotativo) & 04/08/2026 09:40 & 7 & 3 & p.\ 5\\
+\midrule
+\multicolumn{3}{r}{\textbf{Totales}} & \textbf{28} & \textbf{16} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small
+\textbf{Lectura de la tabla.} Los 28 reportes individuales se consolidaron en 16 defectos
+únicos (42,9\,\% de solapamiento entre inspectores). La columna \emph{hallazgos únicos}
+contabiliza los defectos que cada inspector introdujo \emph{por primera vez} al registro
+consolidado del Anexo B; un mismo defecto reportado por dos o más inspectores se asigna a
+quien lo presentó primero en la reunión. Todos los inspectores superan el mínimo de seis
+defectos exigido por la guía.
+\normalsize
+
+\clearpage
+
+% =====================================================================
+% FICHA 1 - ESCUDERO (MODERADORA)
+% =====================================================================
+\subsection*{A.1 --- Copia de la Moderadora}
+\ficha{Escudero Plaza María del Rosario}{Moderadora}{04/08/2026, 08:20}
+{Secciones 2 (Descripción general), 3 (Requisitos específicos) y 4.1--4.2 (casos de uso) del ERS SIMPA v3.0 --- 40 páginas efectivas (pp.\ 12--51).}
+{7 defectos, de los cuales 5 se incorporaron como hallazgo único (D-01, D-05, D-08, D-12, D-14).}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{P{2.0cm} X P{2.5cm} C{1.2cm} P{3.2cm}}
+\toprule
+\cabecera
+\midrule
+Ambigüedad & ¿El criterio de verificación admite una sola interpretación observable? & RF-23 & N & Ver D-01: no se indica qué rol resuelve la inconsistencia bruto/tara/neto.\\
+Ambigüedad & ¿Los plazos y umbrales están expresados en unidades verificables? & RF-15, RL-03 & N & Ver D-08: la revocación del consentimiento no declara plazo de propagación.\\
+Completitud & ¿Se especifica el comportamiento del sistema ante los flujos de excepción declarados por la evidencia? & RF-05, RF-12 & S & Los flujos de excepción de CU-15 y CU-16 cubren los casos revisados.\\
+Consistencia & ¿Las restricciones de diseño son mutuamente compatibles? & RD-02, RD-05 & N & Ver D-07: operación 100\,\% offline frente a inferencia centralizada en la nube.\\
+Consistencia & ¿Las reglas de cálculo de un requisito no contradicen las de otro que comparte el mismo dato? & RF-27, RF-38 & N & Ver D-02: remanente arrastrado y exclusión de labor no presupuestada.\\
+Verificabilidad & ¿Existe un procedimiento de prueba objetivo para el criterio declarado? & RNF-11 & N & Ver D-12: sincronización concurrente sin política de resolución.\\
+Trazabilidad & ¿Los requisitos críticos se sustentan en más de una evidencia de elicitación? & RF-11, RF-23, RF-25, RF-32, RF-33, RF-34 & N & Ver D-05: seis RF dependen de una única evidencia.\\
+Trazabilidad & ¿Cada parte interesada con poder alto está trazada a al menos un requisito? & Tabla 51 (RL) & N & Ver D-14: Agrocalidad sin fila en la tabla de requisitos legales.\\
+Factibilidad & ¿El alcance declarado del MVP es coherente con el esfuerzo disponible del equipo? & §6.1 (MVP) & S & El alcance del MVP vigente es consistente con lo reportado en §6.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small \textbf{Observación del rol.} En su condición de Moderadora, la inspectora no propuso
+correcciones durante la preparación ni durante la reunión: toda propuesta de solución se
+difirió a la etapa de corrección (§5 del informe), conforme a la regla del método Fagan.
+\normalsize
+
+\firma{Escudero Plaza, M. R.}{04/08/2026, 08:20}
+
+\clearpage
+
+% =====================================================================
+% FICHA 2 - HUILCAPI (LECTORA)
+% =====================================================================
+\subsection*{A.2 --- Copia de la Lectora}
+\ficha{Huilcapi León Denisses Fabiola}{Lectora}{04/08/2026, 08:45}
+{Secciones 2, 3 y 4.1--4.2 del ERS SIMPA v3.0 --- 40 páginas efectivas (pp.\ 12--51).}
+{6 defectos, de los cuales 3 se incorporaron como hallazgo único (D-03, D-09, D-16).}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{P{2.0cm} X P{2.5cm} C{1.2cm} P{3.2cm}}
+\toprule
+\cabecera
+\midrule
+Ambigüedad & ¿Cada actor responsable de la acción está identificado sin ambigüedad? & RF-23 & N & Ver D-01: el requisito no asigna responsable de la resolución.\\
+Completitud & ¿El requisito contempla todos los perfiles de usuario declarados en las partes interesadas? & RNF-08 & N & Ver D-03: no se contemplan perfiles con limitación visual o auditiva.\\
+Completitud & ¿Se declaran las políticas de seguridad asociadas al acceso (intentos fallidos, bloqueo, expiración)? & RF-01 & N & Ver D-06: sin política de bloqueo tras intentos fallidos.\\
+Completitud & ¿Se especifica el comportamiento ante interrupción del recurso (batería, red, energía)? & RF-14 & N & Ver D-15: no se define el conteo si la jornada se interrumpe.\\
+Consistencia & ¿La terminología y los identificadores son uniformes entre secciones? & §3.2, §3.3 & S & Identificadores RF/RNF/RD/RL uniformes en las secciones parafraseadas.\\
+Verificabilidad & ¿Los requisitos no funcionales declaran métrica, valor umbral y método de medición? & RNF-04, RNF-08 & S & Los RNF revisados declaran umbral y método; la observación de D-03 es de completitud, no de métrica.\\
+Trazabilidad & ¿Cada flujo alternativo de un caso de uso tiene historia y criterio de aceptación asociados? & CU-06 (flujo B) & N & Ver D-09: flujo de sobremadurez sin HU ni CA en la Tabla 65.\\
+Factibilidad & ¿Toda limitación abierta tiene responsable y fecha límite de cierre? & L-09 & N & Ver D-16: limitación declarada sin responsable ni plazo.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small \textbf{Observación del rol.} Como Lectora, la inspectora preparó además el guion de
+parafraseo sección por sección utilizado en la reunión; los defectos aquí registrados se
+detectaron antes de la reunión y no durante ella.
+\normalsize
+
+\firma{Huilcapi León, D. F.}{04/08/2026, 08:45}
+
+\clearpage
+
+% =====================================================================
+% FICHA 3 - QUINTERO (INSPECTOR 1)
+% =====================================================================
+\subsection*{A.3 --- Copia del Inspector 1}
+\ficha{Quintero Gende Erick Jahir}{Inspector 1}{04/08/2026, 09:15}
+{Secciones 2, 3 y 4.1--4.2 del ERS SIMPA v3.0 --- 40 páginas efectivas (pp.\ 12--51).}
+{8 defectos, de los cuales 5 se incorporaron como hallazgo único (D-04, D-06, D-07, D-11, D-15).}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{P{2.0cm} X P{2.5cm} C{1.2cm} P{3.2cm}}
+\toprule
+\cabecera
+\midrule
+Ambigüedad & ¿El criterio de verificación admite una sola interpretación observable? & RF-23 & N & Ver D-01.\\
+Completitud & ¿Se cubren los casos borde declarados por la evidencia de campo? & RF-14 & N & Ver D-15.\\
+Completitud & ¿Se declaran las políticas de seguridad asociadas al acceso (intentos fallidos, bloqueo, expiración)? & RF-01 & N & Ver D-06.\\
+Consistencia & ¿Las restricciones de diseño son mutuamente compatibles? & RD-02, RD-05 & N & Ver D-07.\\
+Verificabilidad & ¿Existe un procedimiento de prueba objetivo para el criterio? & RNF-11 & N & Ver D-12.\\
+Verificabilidad & ¿El criterio define el resultado esperado en escenarios de resultado múltiple o empatado? & RF-08 & N & Ver D-04: imagen con más de una deficiencia nutricional simultánea.\\
+Trazabilidad & ¿Todo requisito Must tiene caso de uso e historia asociados? & CU-06 & N & Ver D-09.\\
+Factibilidad & ¿El plan del MVP contempla las dependencias técnicas declaradas por WSJF? & RF-10, RF-21 & N & Ver D-11: RF-10 no implementado y bloqueante de RF-21.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small \textbf{Observación del rol.} Esta copia es la reproducida como extracto en el Anexo A
+del informe PE4 (Cuadro 12). Las dos filas adicionales (D-06 y D-04) no aparecen en ese
+extracto por razones de espacio y se documentan aquí en su versión completa.
+\normalsize
+
+\firma{Quintero Gende, E. J.}{04/08/2026, 09:15}
+
+\clearpage
+
+% =====================================================================
+% FICHA 4 - ESCUDERO (INSPECTOR 2, ROTATIVO)
+% =====================================================================
+\subsection*{A.4 --- Copia del Inspector 2 (rol rotativo)}
+\ficha{Escudero Plaza María del Rosario}{Inspector 2 (rotativo)}{04/08/2026, 09:40}
+{Segunda pasada independiente sobre las secciones 2, 3 y 4.1--4.2 del ERS SIMPA v3.0 --- 40 páginas efectivas (pp.\ 12--51), con foco en restricciones, RNF y reglas de negocio no cubiertas en la primera pasada.}
+{7 defectos, de los cuales 3 se incorporaron como hallazgo único (D-02, D-10, D-13).}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{P{2.0cm} X P{2.5cm} C{1.2cm} P{3.2cm}}
+\toprule
+\cabecera
+\midrule
+Ambigüedad & ¿Los plazos y umbrales están expresados en unidades verificables? & RF-15, RL-03 & N & Ver D-08.\\
+Completitud & ¿Existen reglas de desempate o de prioridad cuando dos datos válidos compiten? & RF-36 & N & Ver D-10: tarifas de una misma labor con vigencias traslapadas.\\
+Consistencia & ¿Las restricciones de diseño son mutuamente compatibles? & RD-02, RD-05 & N & Ver D-07.\\
+Consistencia & ¿Las reglas de cálculo de un requisito no contradicen las de otro que comparte el mismo dato? & RF-27, RF-38 & N & Ver D-02.\\
+Verificabilidad & ¿El criterio define el resultado esperado en escenarios de resultado múltiple o empatado? & RF-08 & N & Ver D-04.\\
+Verificabilidad & ¿Los requisitos de privacidad y de exportación declaran un mecanismo comprobable de auditoría? & RF-32 & N & Ver D-13: exclusión de datos personales sin auditoría del filtro.\\
+Trazabilidad & ¿Todo requisito Must revisado enlaza hacia atrás a su fuente y hacia adelante al CU e historia? & RF-13, RF-19 & S & Los Must revisados en la segunda pasada enlazan a CU e HU.\\
+Factibilidad & ¿El plan del MVP contempla las dependencias técnicas declaradas por WSJF? & RF-10, RF-21 & N & Ver D-11.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small \textbf{Observación del rol.} Rol rotativo asumido por la misma integrante en una
+sesión posterior e independiente, con alcance idéntico pero foco distinto (restricciones y
+RNF). El menor tiempo de preparación (1,0 h frente a 1,5 h de la primera pasada) se explica
+por la familiaridad previa con el documento y se refleja en la tasa de detección por
+inspector reportada en \texttt{metricas.xlsx}.
+\normalsize
+
+\firma{Escudero Plaza, M. R.}{04/08/2026, 09:40}
+
+\clearpage
+
+% =====================================================================
+% CIERRE
+% =====================================================================
+\subsection*{A.5 --- Trazabilidad de las copias hacia el registro consolidado}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{C{1.6cm} P{2.2cm} C{1.5cm} X C{3.0cm}}
+\toprule
+\rowcolor{gris}\textbf{Defecto} & \textbf{Propiedad} & \textbf{Severidad} & \textbf{Reportado en preparación por} & \textbf{Hallazgo único de}\\
+\midrule
+D-01 & Ambigüedad & Mayor & Escudero (Mod.), Huilcapi, Quintero & Escudero (Mod.)\\
+D-02 & Consistencia & Mayor & Escudero (Insp.\ 2), Escudero (Mod.) & Escudero (Insp.\ 2)\\
+D-03 & Completitud & Menor & Huilcapi & Huilcapi\\
+D-04 & Verificabilidad & Mayor & Quintero, Escudero (Insp.\ 2) & Quintero\\
+D-05 & Trazabilidad & Crítico & Escudero (Mod.) & Escudero (Mod.)\\
+D-06 & Completitud & Mayor & Quintero, Huilcapi & Quintero\\
+D-07 & Consistencia & Crítico & Quintero, Escudero (Mod.), Escudero (Insp.\ 2) & Quintero\\
+D-08 & Ambigüedad & Mayor & Escudero (Mod.), Escudero (Insp.\ 2) & Escudero (Mod.)\\
+D-09 & Trazabilidad & Mayor & Huilcapi, Quintero & Huilcapi\\
+D-10 & Completitud & Menor & Escudero (Insp.\ 2) & Escudero (Insp.\ 2)\\
+D-11 & Factibilidad & Mayor & Quintero, Escudero (Insp.\ 2) & Quintero\\
+D-12 & Verificabilidad & Crítico & Escudero (Mod.), Quintero & Escudero (Mod.)\\
+D-13 & Verificabilidad & Menor & Escudero (Insp.\ 2) & Escudero (Insp.\ 2)\\
+D-14 & Trazabilidad & Menor & Escudero (Mod.) & Escudero (Mod.)\\
+D-15 & Completitud & Mayor & Quintero, Huilcapi & Quintero\\
+D-16 & Factibilidad & Menor & Huilcapi & Huilcapi\\
+\midrule
+\multicolumn{3}{r}{\textbf{Totales}} & \textbf{28 reportes individuales} & \textbf{16 únicos}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\small
+\sloppy
+Ambos archivos residen en la carpeta \texttt{02\_Inspeccion/} del repositorio. El registro
+consolidado completo, con la descripción de cada defecto y su corrección, se encuentra en
+\texttt{AnexoB\_registro\_defectos.xlsx}; las métricas derivadas de estas cuatro copias
+(densidad, distribución por tipo y severidad, tasa de detección por inspector, esfuerzo y
+tasa de corrección) se encuentran en \texttt{metricas.xlsx}.
+\normalsize
+
+\vspace{0.8cm}
+\begin{center}
+\begin{tabular}{c@{\hspace{1.2cm}}c@{\hspace{1.2cm}}c}
+\rule{4.8cm}{0.4pt} & \rule{4.8cm}{0.4pt} & \rule{4.8cm}{0.4pt}\\
+{\small Escudero Plaza M. R.} & {\small Huilcapi León D. F.} & {\small Quintero Gende E. J.}\\
+{\small Moderadora / Inspector 2} & {\small Lectora} & {\small Inspector 1}\\
+\end{tabular}
+\end{center}
+
+\begin{center}\small Quevedo, Ecuador --- 04 de agosto de 2026\end{center}
+
+\end{document}
