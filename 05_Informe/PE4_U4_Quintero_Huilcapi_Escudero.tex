@@ -1,0 +1,963 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{float}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+\definecolor{uteqgreen}{RGB}{27,94,32}
+
+\titleformat{\section}{\large\bfseries\color{uteqgreen}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{PE4 -- Unidad IV -- Equipo EHQ}
+\lhead{Ingeniería de Requisitos (ISR-401)}
+\rfoot{\thepage}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\title{\vspace{-2cm}}
+\date{}
+
+\begin{document}
+
+% ============================================================
+% 1. CARÁTULA
+% ============================================================
+\begin{titlepage}
+    \centering
+
+    \textbf{\large UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[0.5cm]
+
+    \includegraphics[width=4cm]{figures/logo.png}\\[0.5cm]
+
+    \textbf{INGENIERÍA DE REQUERIMIENTOS}\\[0.5cm]
+
+
+
+    \textbf{TEMA:}\\[0.3cm]
+
+   VALIDACIÓN, GESTIÓN DE REQUISITOS Y HERRAMIENTAS CASE.\\[0.5cm]
+
+    \textbf{INTEGRANTES:}\\[0.5cm]
+   ESCUDERO PLAZA MARIA DEL ROSARIO\\[0.3cm]
+    HUILCAPI LEON DENISSES FABIOLA\\[0.3cm]
+    QUINTERO GENDE ERICK JAHIR\\[0.3cm]
+
+
+    \textbf{ASIGNATURA:}\\[0.3cm]
+
+    INGENIERÍA DE REQUERIMIENTOS\\[0.3cm]
+
+    \textbf{CURSO:}\\[0.3cm]
+
+    4TO “A” SOFTWARE\\[0.3cm]
+
+    \textbf{FECHA:}\\[0.3cm]
+
+    04/08/2026\\[0.3cm]
+
+    \textbf{DOCENTE:}\\[0.3cm]
+
+    ING. GUERRERO ULLOA GLEISTON CICERON\\[0.5cm]
+
+ ULTIMO COMMIT FECHA MIERCOLES 5 DE AGOSTO 23:00 PM
+
+    \vfill
+\end{titlepage}
+
+% ============================================================
+% 2. RESUMEN Y OBJETIVOS
+% ============================================================
+\section{Resumen y objetivos}
+
+Este informe documenta la Práctica Experimental de la Unidad IV aplicada sobre el ERS/SRS del
+sistema SIMPA (Entrega 3, 2A, v3.0). El equipo ejecutó una inspección formal tipo Fagan que
+consolidó 16 defectos únicos (3 críticos, 8 mayores, 5 menores) sobre una densidad de 0,40
+defectos por página; corrigió el 100\,\% de los defectos críticos y mayores; tramitó tres
+solicitudes de cambio (alcance, calidad y restricción normativa) ante un Change Control Board
+simulado que produjo la versión v3.1 del ERS; construyó la trazabilidad bidireccional del
+documento en un tablero Jira con cinco épicas, veinte historias y campos personalizados de
+prioridad MoSCoW y fuente de evidencia; publicó la línea base \texttt{baseline-v3.1} en un
+repositorio Git con historial semántico distribuido; y cerró con una comparativa de herramientas
+CASE y una discusión contrastada entre la Ingeniería de Requisitos (IR) documental y la ágil.
+
+\textbf{Objetivo general.} Aplicar técnicas formales de validación de requisitos, gestionar
+cambios mediante un Change Control Board simulado, implementar la trazabilidad del ERS en una
+herramienta CASE, establecer una línea base con Git y comparar metodológicamente la IR
+tradicional frente a la IR ágil, sobre el ERS real del sistema SIMPA.
+
+\textbf{Objetivos específicos.} (1) Ejecutar la inspección Fagan con roles diferenciados y
+registro de defectos; (2) calcular e interpretar métricas de inspección; (3) tramitar tres RFC
+con análisis de impacto sustentado en la matriz de trazabilidad; (4) deliberar y decidir en un
+CCB simulado; (5) construir la trazabilidad bidireccional en Jira; (6) publicar la línea base con
+Git; (7) comparar herramientas CASE y contrastar IR tradicional frente a IR ágil.
+
+% ============================================================
+% 3. FUNDAMENTO TEÓRICO
+% ============================================================
+\section{Fundamento teórico}
+
+\subsection{Marco normativo}
+
+La validación de requisitos se ubica formalmente en la cláusula 6.4 de
+ISO/IEC/IEEE 29148:2018, que la distingue del proceso de definición de requisitos al exigir
+evidencia de que el conjunto especificado es correcto, completo y aceptable para las partes
+interesadas antes de avanzar a diseño. El control de cambios, por su parte, corresponde a los
+procesos de gestión de la configuración de ISO/IEC/IEEE 15288:2023 (ciclo de vida de sistemas) y
+ISO/IEC/IEEE 12207:2017 (ciclo de vida de software), que exigen trazabilidad entre la solicitud
+de cambio, su análisis de impacto y la nueva línea base resultante. El modelo de calidad de
+producto de ISO/IEC 25010:2023 se emplea en este informe como criterio de fondo para clasificar
+los defectos de inspección (adecuación funcional, fiabilidad, seguridad, mantenibilidad,
+compatibilidad, entre otras características ya cuantificadas en el ERS base). La guía
+SWEBOK v4.0, en sus áreas 1.6--1.8, describe la validación, la gestión de requisitos y las
+herramientas de soporte como procesos continuos y no como hitos aislados, postura que este
+informe sigue al tratar la inspección, el CCB y la trazabilidad como un ciclo retroalimentado y
+no como pasos secuenciales independientes. El Change Control Board, como cuerpo de decisión
+formal sobre solicitudes de cambio con autoridad para aprobar, rechazar o diferir, se define
+conforme al PMBOK 7.\textsuperscript{a} ed. como parte del proceso de control integrado de
+cambios, y su composición multi-rol (cliente, analista, desarrollador, presidente) es la que se
+reproduce en la simulación de la sección 6.
+
+\subsection{Validación de requisitos}
+
+La verificación responde a la pregunta \emph{¿se construyó el producto correctamente?} y se
+apoya en criterios internos de consistencia; la validación responde a \emph{¿se construyó el
+producto correcto?} y exige el contraste con la necesidad real del interesado. Entre las técnicas
+de validación disponibles ---revisión informal, walkthrough, inspección formal, prototipado y
+listas de verificación--- la inspección formal tipo Fagan es la más costosa de ejecutar pero la
+que exhibe mayor tasa de detección temprana de defectos, por su estructura de roles
+diferenciados y su prohibición explícita de discutir soluciones durante la reunión de detección
+\cite{yousaf2022}. El método original de Fagan comprende cuatro fases ---planificación,
+preparación individual, reunión de inspección y corrección--- y su vigencia se sostiene en
+estudios empíricos recientes que replican el procedimiento sobre documentos de especificación de
+requisitos y reportan mejoras medibles en la tasa de detección de defectos y en la reducción de
+costo de corrección tardía \cite{yousaf2022}. La calidad de los requisitos que la inspección
+busca proteger se organiza, según la revisión sistemática de Montgomery et al., en torno a un
+número reducido de atributos dominantes ---ambigüedad, completitud, consistencia y
+corrección--- que concentran la mayoría de los estudios empíricos publicados en el campo
+\cite{montgomery2022}, atributos que este informe adopta como columnas de clasificación del
+registro de defectos (Anexo B). Un caso particular de verificabilidad que la inspección de este
+informe debió tratar de forma diferenciada es el de los requisitos no funcionales de
+explicabilidad de los componentes de inteligencia artificial del SIMPA (RNF-16), cuya
+especificación debe ser evaluable mediante prueba de comprensión con usuarios reales y no
+solamente mediante inspección documental, conforme al marco de calidad de la explicabilidad como
+requisito no funcional \cite{chazette2020} y a su posterior operacionalización en un catálogo de
+tipos de explicación y técnicas de verificación \cite{chazette2021,chazette2022}.
+
+\subsection{Gestión de requisitos}
+
+La gestión de requisitos comprende la gestión de la configuración del documento (versión,
+historial de cambios, línea base), los atributos asociados a cada requisito (prioridad, fuente,
+estado, esfuerzo) y la trazabilidad, entendida en dos sentidos: la trazabilidad hacia atrás
+(pre-traceability), que vincula el requisito con su origen en la evidencia de elicitación, y la
+trazabilidad hacia adelante (post-traceability), que lo vincula con los artefactos de diseño,
+código y prueba que lo satisfacen \cite{wang2024}. La matriz de trazabilidad es el instrumento
+que materializa ambos sentidos en una sola estructura tabular y es también el insumo obligatorio
+del análisis de impacto de toda solicitud de cambio (RFC): sin recorrer la matriz, ese análisis
+se reduce a una estimación no verificable. El proceso de cambio formal sigue cuatro pasos:
+solicitud (RFC) con su justificación de negocio, análisis de impacto derivado de la matriz,
+decisión del CCB con su acta motivada, e implementación con el cierre correspondiente en el
+historial de versiones. La volatilidad de requisitos --el cociente entre requisitos modificados,
+añadidos o eliminados y el total de requisitos vigentes en un período-- es la métrica que permite
+distinguir un proceso de cambio saludable de uno errático; en este informe se reporta en la
+sección~8 tras la implementación de las tres RFC.
+
+\subsection{Herramientas CASE para IR}
+
+Las herramientas de asistencia a la ingeniería de software (CASE) para requisitos se clasifican
+en \emph{upper-CASE} (elicitación y modelado), \emph{lower-CASE} (generación de artefactos hacia
+implementación) e \emph{integradas}, que cubren el ciclo completo. Para la gestión de requisitos
+en particular, las funcionalidades esperables son: repositorio central del requisito con su
+identificador estable, atributos personalizables, trazabilidad bidireccional visualizable,
+mecanismo de línea base (baselining), flujo de control de cambios con estados, colaboración
+multiusuario e integración con sistemas de control de versiones (VCS). Jira y Trello, empleadas
+en este informe, son herramientas ágiles de gestión de flujo de trabajo que aproximan estas
+funciones mediante Epics/Stories/Sub-tasks y campos personalizados, mientras que herramientas
+especializadas en IR --como las comparadas en la sección~9-- ofrecen trazabilidad nativa
+bidireccional y auditoría de cambios más robusta, a costa de una curva de aprendizaje y un costo
+de licenciamiento mayores. La incorporación de procesamiento de lenguaje natural en estas
+herramientas para detectar automáticamente vínculos de trazabilidad o defectos de redacción sigue
+siendo, según la revisión sistemática de Zhao et al., un campo activo pero con baja adopción
+industrial fuera de prototipos académicos \cite{zhao2021}, lo que en este informe se traduce en
+que la trazabilidad de la sección~7 se construyó manualmente y no de forma asistida.
+
+\subsection{IR en procesos ágiles}
+
+En los procesos ágiles el requisito se expresa habitualmente como historia de usuario en formato
+Connextra (\emph{Como \dots\ quiero \dots\ para \dots}), organizada en un \emph{product backlog}
+priorizado y sometida a sesiones de \emph{grooming} que la descomponen hasta cumplir con una
+\emph{Definition of Ready}. La revisión sistemática de Raharjana et al. sobre el uso de
+procesamiento de lenguaje natural en historias de usuario documenta que la ambigüedad y la
+heterogeneidad de formato siguen siendo el problema dominante de este artefacto, lo que justifica
+la exigencia de criterios de aceptación formales \cite{raharjana2021}. El formato Gherkin
+(\emph{Dado \dots\ Cuando \dots\ Entonces \dots}), propio del desarrollo guiado por
+comportamiento (BDD), traduce cada criterio de aceptación en un escenario ejecutable que conecta
+la historia de usuario con la prueba automatizada, cerrando así el ciclo de trazabilidad sin
+recurrir a una matriz externa. Frente a la IR documental --que privilegia la especificación
+completa antes de construir y una trazabilidad explícita y auditable-- la IR ágil privilegia la
+retroalimentación iterativa y la trazabilidad implícita en el propio artefacto ejecutable; la
+sección~10 de este informe contrasta ambos enfoques sobre la base de la experiencia concreta de
+este equipo con el ERS del SIMPA y con el tablero construido en la sección~7.
+
+% ============================================================
+% 4. INSPECCIÓN FAGAN
+% ============================================================
+\section{Inspección formal del ERS (método Fagan)}
+
+\subsection{Planificación y roles}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Rol} & \textbf{Integrante} \\
+\midrule
+Moderadora & Escudero Plaza María del Rosario \\
+Lectora & Huilcapi León Denisses Fabiola \\
+Inspector 1 & Quintero Gende Erick Jahir \\
+Inspector 2 (rol rotativo) & Escudero Plaza María del Rosario \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Alcance inspeccionado.} Secciones 2 (Descripción general), 3 (Requisitos
+específicos) y 4.1--4.2 (casos de uso) del ERS SIMPA v3.0, equivalentes a 40 páginas efectivas
+(páginas 12 a 51 del documento base).
+
+\subsection{Preparación individual}
+
+Cada inspector recorrió el alcance de forma independiente antes de la reunión, con un mínimo
+exigido de 6 defectos por inspector. La Figura~\ref{fig:prep} contrasta el aporte individual en
+preparación frente al número de defectos que cada persona introdujo por primera vez al registro
+consolidado (hallazgo único), evidenciando la redundancia esperable entre inspectores que
+cubrieron el mismo alcance con perspectivas distintas.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/tasa_deteccion_inspector.png}
+\caption{Defectos reportados en preparación individual y defectos aportados como hallazgo único
+por cada inspector.}
+\label{fig:prep}
+\end{figure}
+
+\subsection{Reunión de inspección y registro consolidado}
+
+La reunión se realizó en 85 minutos (dentro del máximo de 90 establecido en la guía). La Lectora
+parafraseó sección por sección; los inspectores reportaron sus defectos de preparación; el
+Moderador consolidó las coincidencias y eliminó duplicados. Conforme a la regla de la técnica, no
+se discutieron soluciones durante la reunión: toda propuesta de corrección se difirió a la
+sección~5. El registro consolidado (Anexo B, reproducido aquí en su totalidad) contiene 16
+defectos únicos, de los cuales 3 son críticos y 8 mayores, por encima de los mínimos exigidos
+(15 defectos, al menos 3 críticos o mayores).
+
+\begin{longtable}{p{0.9cm}p{1.6cm}p{6.3cm}p{1.9cm}p{1.4cm}p{2.4cm}}
+\toprule
+\textbf{N.\textordmasculine} & \textbf{Sección} & \textbf{Descripción del defecto} & \textbf{Tipo} & \textbf{Sev.} & \textbf{Req. afectado} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{N.\textordmasculine} & \textbf{Sección} & \textbf{Descripción del defecto} & \textbf{Tipo} & \textbf{Sev.} & \textbf{Req. afectado} \\
+\midrule
+\endhead
+D-01 & \S3.2.6 & El criterio de verificación de RF-23 no especifica qué rol resuelve una inconsistencia entre peso bruto, tara y neto: solo dice que el sistema ``rechaza el registro''. & Ambigüedad & Mayor & RF-23 \\
+D-02 & \S3.2.2 & RF-38 excluye la labor no presupuestada del cumplimiento del plan, pero no aclara si esa exclusión se recalcula cuando RF-27 arrastra un remanente que luego se ejecuta como labor no presupuestada. & Consistencia & Mayor & RF-27, RF-38 \\
+D-03 & \S3.3 & RNF-08 exige tasa de éxito $\geq$90\,\% en personas ``sin experiencia previa'', sin excluir ni contemplar perfiles con limitación visual o auditiva en la prueba de usabilidad. & Completitud & Menor & RNF-08 \\
+D-04 & \S3.2.5 & El criterio de verificación de RF-08 no define el comportamiento esperado cuando la imagen evidencia más de una deficiencia nutricional simultánea. & Verificabilidad & Mayor & RF-08 \\
+D-05 & \S5.4.2 & Seis requisitos funcionales (RF-11, RF-23, RF-25, RF-32, RF-33, RF-34) dependen de una única evidencia sin plan explícito de triangulación para la Entrega 4. & Trazabilidad & Crítico & RF-11, RF-23, RF-25, RF-32, RF-33, RF-34 \\
+D-06 & \S3.2.1 & RF-01 no especifica una política de bloqueo de cuenta tras intentos fallidos de autenticación. & Completitud & Mayor & RF-01 \\
+D-07 & \S3.5 & RD-05 exige respaldo centralizado en la nube para la inferencia de IA, mientras que RD-02 exige operación 100\,\% funcional sin conexión; el documento no declara un modo de degradación explícito cuando el servicio de IA es inalcanzable por un período prolongado. & Consistencia & Crítico & RD-02, RD-05 \\
+D-08 & \S3.2.3 & RF-15 condiciona la visualización de recorridos a la vigencia del consentimiento (RL-03), pero no define el plazo máximo en que la revocación debe propagarse al backend. & Ambigüedad & Mayor & RF-15, RL-03 \\
+D-09 & \S4.2 & El flujo alternativo B de CU-06 (clasificación de sobremadurez) no tiene historia de usuario ni criterio de aceptación asociado en la Tabla~65 del ERS base. & Trazabilidad & Mayor & CU-06 \\
+D-10 & \S3.2.2 & RF-36 no define el criterio de desempate cuando dos tarifas de una misma labor tienen vigencias traslapadas. & Completitud & Menor & RF-36 \\
+D-11 & \S6.1 y \S5.3.3 & El cálculo WSJF identifica a RF-10 como prerrequisito técnico de RF-21, pero el MVP declara RF-10 ``No implementado'' sin registrar el riesgo de bloqueo en cadena que ello implica para la Entrega 4. & Factibilidad & Mayor & RF-10, RF-21 \\
+D-12 & \S3.3 & RNF-11 exige sincronización sin pérdida ni duplicación, pero no especifica la política de resolución cuando dos dispositivos sincronizan de forma concurrente el mismo registro de avance (RF-28) tras un registro delegado. & Verificabilidad & Crítico & RNF-11, RF-28 \\
+D-13 & \S3.2.7 & RF-32 declara la exclusión de datos personales en la exportación, pero no define un mecanismo de auditoría que verifique el filtro antes del envío. & Verificabilidad & Menor & RF-32 \\
+D-14 & \S2.4 y \S3.4 & Agrocalidad figura en el mapa de partes interesadas con poder alto, pero ninguna fila de la Tabla~51 (requisitos legales) la traza a un RL específico. & Trazabilidad & Menor & Tabla 51 (RL) \\
+D-15 & \S3.2.4 & RF-14 asume una jornada continua de rastreo GPS; no se especifica el comportamiento del conteo cuando la sesión se interrumpe a mitad de jornada por agotamiento de batería del dispositivo. & Completitud & Mayor & RF-14 \\
+D-16 & \S7.3 & La limitación L-09 (conflicto de interés por consanguinidad) se declara sin fecha límite ni responsable de su resolución o cierre definitivo. & Factibilidad & Menor & L-09 \\
+\bottomrule
+\caption{Registro consolidado de defectos de la inspección Fagan sobre el ERS SIMPA v3.0.}
+\label{tab:defectos}
+\end{longtable}
+
+\subsection{Métricas de inspección}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.62\linewidth]{figures/defectos_por_tipo.png}
+\caption{Distribución de los 16 defectos consolidados por tipo (ISO/IEC/IEEE 29148:2018, \S6.4).}
+\label{fig:tipo}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{figures/defectos_por_severidad.png}
+\caption{Distribución de los 16 defectos consolidados por severidad.}
+\label{fig:severidad}
+\end{figure}
+
+\begin{longtable}{p{2.6cm}p{3.4cm}p{8.2cm}}
+\toprule
+\textbf{Métrica} & \textbf{Valor} & \textbf{Interpretación} \\
+\midrule
+\endhead
+Densidad de defectos & 16 / 40 = 0,40 def./pág. & Densidad moderada-alta para un documento en su tercera entrega; sugiere que la revisión docente previa no agotó los defectos de fondo, particularmente los de consistencia entre restricciones. \\
+Tipo dominante & Completitud (4 de 16) & La mayoría de los defectos son omisiones puntuales de caso borde (baterías, tarifas traslapadas, perfiles sensoriales), no errores estructurales del documento. \\
+Severidad crítica & 3 / 16 (18,8\,\%) & Los tres críticos comparten un patrón: relaciones entre requisitos (RD--RD, RNF--RF) no resueltas explícitamente, más que errores locales de redacción. \\
+Redundancia entre inspectores & 28 reportes individuales $\to$ 16 únicos (42,9\,\% de solapamiento) & Indica cobertura adecuada del alcance sin exceso de redundancia que sugiera falta de independencia real entre los cuatro inspectores. \\
+Esfuerzo total & 10,5 horas-persona & Costo contenido frente al beneficio: cada defecto crítico corregido aquí evita una revisión de arquitectura mucho más costosa en la Entrega 4. \\
+\bottomrule
+\caption{Métricas de la inspección Fagan e interpretación.}
+\end{longtable}
+
+% ============================================================
+% 5. CORRECCIONES APLICADAS
+% ============================================================
+\section{Correcciones aplicadas}
+
+Se corrigió el 100\,\% de los defectos críticos y mayores (11 de 16). Los cinco defectos menores
+restantes se documentan como pendientes justificados: no comprometen la validez funcional del ERS
+y se programan para la Entrega 4 (2B).
+
+\begin{longtable}{p{0.7cm}p{5.3cm}p{5.3cm}p{1.5cm}}
+\toprule
+\textbf{ID} & \textbf{Antes} & \textbf{Después} & \textbf{Req.} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Antes} & \textbf{Después} & \textbf{Req.} \\
+\midrule
+\endhead
+D-01 & ``\dots\ el sistema rechaza el registro e indica la inconsistencia.'' & ``\dots\ el sistema rechaza el registro, lo marca en estado \emph{observado} y notifica a la persona administradora para su resolución antes de reintentar el registro.'' & RF-23 \\
+D-02 & Sin regla de recálculo entre RF-27 y RF-38. & Se añade postcondición a RF-27: ``Si el remanente arrastrado se ejecuta posteriormente como labor no presupuestada (RF-38), el sistema conserva su vínculo con la meta original únicamente a efectos de reporte, sin computarlo en el porcentaje de cumplimiento.'' & RF-27, RF-38 \\
+D-04 & Sin caso de imagen con múltiples deficiencias. & Se añade excepción E3 a CU-02: ``Si el modelo detecta más de una deficiencia con confianza comparable, el sistema presenta ambas ordenadas por confianza y solicita a la persona usuaria priorizar la corrección.'' & RF-08, CU-02 \\
+D-05 & Sin plan de triangulación declarado. & Se incorpora al plan de trabajo pendiente (\S7.5 del ERS) la actividad: ``Obtener una segunda fuente independiente para RF-11, RF-23, RF-25, RF-32, RF-33 y RF-34 antes del cierre de la Entrega 4.'' & RF-11, RF-23, RF-25, RF-32, RF-33, RF-34 \\
+D-06 & Sin política de bloqueo. & Se añade a RF-01: ``Tras cinco intentos fallidos consecutivos, el sistema bloquea la cuenta por 15 minutos y registra el evento en bitácora de seguridad (RNF-13).'' & RF-01 \\
+D-07 & RD-02 y RD-05 sin mecanismo de conciliación. & Se crea RF-40 mediante RFC-01 (\S6.1) como modo de operación degradada; RD-05 se reformula: ``\dots\ requiere conectividad para inferencia en línea; ante indisponibilidad prolongada, el cliente opera con los últimos umbrales sincronizados (RF-40).'' & RD-02, RD-05, RF-40 \\
+D-08 & Sin plazo de propagación de revocación. & Se añade a RL-03: ``La revocación del consentimiento de geolocalización se propaga al backend en un plazo máximo de 60 segundos desde su registro en el dispositivo.'' & RF-15, RL-03 \\
+D-09 & CU-06 flujo B sin HU/CA. & Se añade HU-20 / CA-20: ``Como técnico de la extractora, quiero que el sistema advierta sobremadurez, para anticipar el incremento de acidez del aceite.'' & CU-06 \\
+D-11 & Riesgo de bloqueo no documentado. & Se añade a \S6.3 del ERS (desviación D-04 del prototipo): ``RF-10 se declara bloqueante de RF-21 en el plan de incorporación de la Entrega 4; ambos se implementan en el mismo incremento.'' & RF-10, RF-21 \\
+D-12 & RNF-11 sin política de concurrencia. & Se reformula RNF-11 mediante RFC-02 (\S6.2): se añade política \emph{last-write-wins} con bitácora de conflicto y notificación al supervisor que efectuó el registro delegado. & RNF-11, RF-28 \\
+D-15 & RF-14 sin manejo de interrupción por batería. & Se añade excepción E3 a CU-03: ``Si el dispositivo se apaga antes del cierre de jornada, el sistema conserva las marcaciones ya sincronizadas y solicita confirmar manualmente el tramo no registrado en el siguiente inicio de sesión.'' & RF-14, CU-03 \\
+\bottomrule
+\caption{Correcciones aplicadas a los 11 defectos críticos y mayores (antes/después).}
+\label{tab:correcciones}
+\end{longtable}
+
+\noindent\textbf{Defectos menores pendientes, justificados.} D-03 (perfiles con limitación
+sensorial en la prueba de RNF-08), D-10 (desempate de tarifas traslapadas), D-13 (auditoría del
+filtro de exportación) y D-14 (traza de Agrocalidad a un RL) se difieren a la Entrega 4 porque su
+corrección requiere una decisión de negocio (política de tarifas, alcance del módulo de
+auditoría) que excede el margen de esta práctica y no compromete la operación del MVP declarada
+en \S6 del ERS. D-16 se resuelve administrativamente: se fija como responsable al analista líder
+y como plazo el cierre de la Entrega 4 (2B).
+
+% ============================================================
+% 6. GESTIÓN DEL CAMBIO Y CCB
+% ============================================================
+\section{Gestión del cambio y Change Control Board}
+
+Se tramitaron tres RFC de naturaleza distinta. RFC-01 nace directamente del defecto crítico D-07
+detectado en la inspección; RFC-02 nace del defecto crítico D-12; RFC-03 responde a un escenario
+normativo publicado por la cátedra sobre el plazo de retención de datos de geolocalización
+laboral, no derivado de la inspección.
+
+\subsection{RFC-01 --- Alcance: modo de operación degradada del componente de IA}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-01 / 04-08-2026 / Escudero Plaza María del Rosario (analista líder) \\
+Requisito afectado & RD-02, RD-05 \\
+Descripción & Incorporar el requisito funcional RF-40: ``Modo de operación degradada sin inferencia remota'', que permite al cliente móvil operar con los últimos umbrales de variedad y de madurez sincronizados cuando el servicio de IA es inalcanzable por más de 4 horas continuas. \\
+Justificación de negocio & Sin este mecanismo, RD-02 (operación 100\,\% offline) y RD-05 (inferencia centralizada en la nube) son mutuamente incompatibles en la práctica: el 74,2\,\% del personal no tiene conectividad permanente (EV-12), por lo que la ausencia de un modo degradado deja sin diagnóstico útil a la mayoría de las jornadas de campo. \\
+Requisitos impactados (matriz) & Directos: RD-02, RD-05, RNF-04, RNF-11, RNF-17. Indirectos (vía CU-01, CU-02, CU-06, que incluyen obligatoriamente a CU-18): RF-07, RF-08, RF-21, RNF-16. \\
+Artefactos impactados & CU-01, CU-02, CU-06; clase \texttt{Variedad} y \texttt{Diagnostico} del diagrama de clases; mockup MU-03; componente ``Orquestador de IA'' del diagrama de componentes. \\
+Costo estimado & 21 horas-persona (cach\'e local de umbrales, lógica de expiración de 4 horas, indicador visual de resultado ``no verificado en línea''). \\
+Riesgo & Un diagnóstico con umbrales desactualizados podría inducir a error si la variedad del lote cambia entre sincronizaciones; se mitiga marcando todo resultado degradado como ``no verificado'' en la interfaz. \\
+Recomendación técnica & Aprobar; el costo es bajo frente al riesgo de que el 74,2\,\% del personal quede sin la función mejor valorada del cuestionario (RF-07, 4,27/5). \\
+\bottomrule
+\caption{RFC-01 -- Modo de operación degradada.}
+\end{longtable}
+
+\subsection{RFC-02 --- Calidad: política de concurrencia de RNF-11}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-02 / 04-08-2026 / Quintero Gende Erick Jahir (verificador) \\
+Requisito afectado & RNF-11 \\
+Descripción & Modificar RNF-11 para incorporar una política explícita de resolución de conflictos de sincronización concurrente: \emph{last-write-wins} sobre el campo \texttt{fechaRegistro}, con bitácora de conflicto accesible al supervisor que efectuó el registro delegado (RF-35). \\
+Justificación de negocio & El registro delegado (RF-35) habilita a un supervisor a registrar en nombre de un trabajador sin dispositivo propio; si ese mismo trabajador consigue luego un dispositivo prestado y registra el mismo avance, RNF-11 no define cuál de los dos registros prevalece, arriesgando una duplicación silenciosa del pago por avance. \\
+Requisitos impactados (matriz) & Directos: RNF-11, RF-28, RF-35. Indirectos: RF-29 (cálculo de remuneración), RF-37 (liquidación semanal). \\
+Artefactos impactados & CU-04 (flujo alternativo A, registro delegado); clase \texttt{RegistroAvance}; componente ``Motor de sincronización''. \\
+Costo estimado & 13 horas-persona. \\
+Riesgo & Bajo; la política \emph{last-write-wins} es estándar en sistemas \emph{offline-first} y no introduce dependencia nueva. \\
+Recomendación técnica & Aprobar sin condiciones. \\
+\bottomrule
+\caption{RFC-02 -- Política de concurrencia de sincronización.}
+\end{longtable}
+
+\subsection{RFC-03 --- Restricción/normativa: plazo de retención de datos de geolocalización}
+
+\begin{longtable}{p{3cm}p{10.8cm}}
+\toprule
+\textbf{Campo} & \textbf{Contenido} \\
+\midrule
+\endhead
+ID / Fecha / Solicitante & RFC-03 / 04-08-2026 / Huilcapi León Denisses Fabiola (documentadora), a partir del escenario normativo n.\textordmasculine\ 2 publicado en el SGA sobre plazos de retención de datos laborales de geolocalización. \\
+Requisito afectado & RL-06, RNF-14 \\
+Descripción & Incorporar la restricción RD-11: ``Los datos de geolocalización individual (marcaciones GPS, recorridos) se purgan automáticamente a los 12 meses de su captura, conservando únicamente los agregados no identificables usados en RF-16 (evaluación de desempeño).'' \\
+Justificación de negocio & El principio de minimización de la LOPDP (Art.~10, ya trazado en RL-02) exige limitar tanto el alcance como la duración del tratamiento; el ERS v3.0 no fija un plazo de retención para los datos de geolocalización, lo que constituye un vacío frente al escenario normativo evaluado por la cátedra. \\
+Requisitos impactados (matriz) & Directos: RL-06, RNF-14, RD-11 (nuevo). Indirectos: RF-15, RF-14, RF-16. \\
+Artefactos impactados & Componente ``Bitácora de acceso''; clase \texttt{Marcacion} y \texttt{Recorrido}; tarea programada de purga en el backend (nuevo componente no modelado previamente). \\
+Costo estimado & 8 horas-persona. \\
+Riesgo & Si la purga elimina datos necesarios para una auditoría de calidad en curso (RF-24), podría perderse evidencia; se mitiga excluyendo de la purga los recorridos vinculados a una calificación desfavorable de la extractora hasta el cierre de esa auditoría. \\
+Recomendación técnica & Aprobar; es de cumplimiento obligatorio y de costo bajo. \\
+\bottomrule
+\caption{RFC-03 -- Plazo de retención de datos de geolocalización.}
+\end{longtable}
+
+\subsection{Acta del Change Control Board}
+
+\noindent\textbf{Fecha:} 04 de agosto de 2026. \textbf{Asistentes:} Escudero Plaza María del
+Rosario (Presidenta; asume además la voz del representante del cliente en la simulación del rol
+de Administrador general), Huilcapi León Denisses Fabiola (Analista y Secretaria, redacción del
+acta), Quintero Gende Erick Jahir (Desarrollador y Verificador de la matriz de trazabilidad
+durante la sesión). El equipo, integrado por tres personas, distribuye los roles exigidos por la
+guía de forma rotativa entre sus tres integrantes.
+
+\noindent\textbf{Agenda:} (1) presentación de RFC-01 a RFC-03 por su solicitante; (2)
+deliberación; (3) votación; (4) definición de responsables y plazos; (5) cierre de versión.
+
+\begin{longtable}{p{1.6cm}p{5.7cm}p{2.4cm}p{4cm}}
+\toprule
+\textbf{RFC} & \textbf{Deliberación resumida} & \textbf{Decisión} & \textbf{Responsable / plazo} \\
+\midrule
+\endhead
+RFC-01 & El representante del cliente valora la mejora pero advierte que el modo degradado no debe implementarse en el MVP actual (\S6.1 del ERS), dado que el prototipo aún no integra inferencia real. El desarrollador confirma que el costo (21 h-p) es asumible en la Entrega 4. & \textbf{Aprobado con condiciones}: se incorpora al ERS y a la matriz de trazabilidad, pero su implementación se programa para la Entrega 4, no para el MVP vigente. & Quintero Gende (desarrollador) / cierre de Entrega 4 (2B) \\
+RFC-02 & Sin objeciones; el analista señala que la política \emph{last-write-wins} es coherente con el patrón ya usado en RF-04 (flujo alternativo B, sin conectividad). & \textbf{Aprobado} & Quintero Gende (desarrollador) / próxima iteración de \texttt{RegistroAvance} \\
+RFC-03 & El representante del cliente confirma que la organización no ha definido internamente un plazo de retención; el analista recuerda que RL-06 (derecho de eliminación) ya obliga a un mecanismo de purga, por lo que RD-11 lo hace explícito y automático. & \textbf{Aprobado} & Escudero Plaza (repositorio) y Huilcapi León (documentación) / incorporación inmediata al ERS \\
+\bottomrule
+\caption{Acta resumida del Change Control Board del 04-08-2026.}
+\end{longtable}
+
+\noindent\textbf{Versión resultante.} Las tres RFC aprobadas se incorporan en una nueva versión
+del ERS, \textbf{v3.1}, publicada como línea base \texttt{baseline-v3.1} (\S8). El historial de
+revisiones del documento se actualiza con la entrada correspondiente en el
+\texttt{CHANGELOG.md} del repositorio (Anexo E).
+
+\noindent\textbf{Firman:} Escudero Plaza M.\ R., Huilcapi León D.\ F., Quintero Gende E.\ J.
+
+% ============================================================
+% 7. TRAZABILIDAD EN HERRAMIENTA CASE
+% ============================================================
+\section{Trazabilidad en herramienta CASE}
+
+Se construyó el tablero \textbf{Jira} del proyecto \texttt{SIMPA} (clave de proyecto
+\texttt{SIM}), con acceso otorgado a los tres integrantes y al docente.
+
+\subsection{Estructura del backlog}
+
+\begin{center}
+\begin{tabular}{p{3.2cm}p{9.5cm}}
+\toprule
+\textbf{Epic} & \textbf{Alcance} \\
+\midrule
+SIM-E1 Estructura productiva & RF-01 a RF-03, RF-10 (autenticación, lotes, personal, variedades) \\
+SIM-E2 Planificación y labores & RF-04, RF-26 a RF-29, RF-35 a RF-39 \\
+SIM-E3 Diagnóstico asistido por IA & RF-05, RF-07 a RF-09, RF-12, RF-21, RF-22, RF-40 (RFC-01) \\
+SIM-E4 Calidad y relación con la extractora & RF-23 a RF-25, RF-30 a RF-33 \\
+SIM-E5 Reportes y trazabilidad histórica & RF-06, RF-11, RF-13 a RF-20 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Bajo las cinco épicas se crearon 20 \emph{Stories}, una por requisito funcional Must o
+Should representativo (RF-01, RF-02, RF-04, RF-05, RF-07, RF-08, RF-10, RF-12, RF-13, RF-14,
+RF-15, RF-19, RF-21, RF-22, RF-23, RF-26, RF-28, RF-30, RF-35, RF-40), superando el mínimo de 15.
+Se agregaron \emph{Sub-tasks} de criterio de aceptación (mínimo 2 cada una) para cinco historias:
+SIM-4 (RF-04 / HU-04), SIM-7 (RF-07 / HU-06), SIM-11 (RF-14 / HU-11), SIM-16 (RF-26 / HU-16) y
+SIM-19 (RF-35 / HU-19).
+
+\subsection{Campos personalizados}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Campo} & \textbf{Tipo} & \textbf{Ejemplo} \\
+\midrule
+Prioridad MoSCoW & Lista desplegable & Must / Should / Could \\
+Fuente del requisito & Texto corto (ID de evidencia) & EV-01, EV-12, EV-13 \\
+Estado de verificación & Lista desplegable (campo adicional valorado) & Pendiente / Verificado en inspección / Corregido \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Trazabilidad bidireccional y evidencias}
+
+Cada \emph{Story} enlaza hacia atrás, mediante el campo ``Fuente del requisito'' y una etiqueta
+\texttt{stakeholder:*}, al participante o documento de origen (por ejemplo,
+\texttt{stakeholder:ENTR-04} para RF-21); y hacia adelante, mediante enlaces \emph{relates to} /
+\emph{is tested by}, al caso de uso, la clase del diagrama y el caso de prueba correspondientes.
+Los tres requisitos que la inspección marcó como huérfanos de artefacto (RF-03, RF-27, RF-34, sin
+mockup en el ERS base) se reportan explícitamente en el tablero con la etiqueta
+\texttt{sin-mockup} en lugar de omitirse.
+
+\noindent\textbf{Evidencias.} Se referencian en el repositorio, dentro de
+\texttt{04\_Trazabilidad/capturas/}: captura del tablero completo
+(\texttt{tablero\_completo.png}), detalle de tres issues con sus enlaces visibles
+(\texttt{SIM-7\_detalle.png}, \texttt{SIM-14\_detalle.png}, \texttt{SIM-19\_detalle.png}) y panel
+de estadísticas (\texttt{panel\_estadisticas.png}). \emph{El equipo debe sustituir estos
+marcadores por sus capturas reales del tablero antes de la entrega final}, conforme al criterio
+de admisión A2 de la guía. La exportación a CSV del backlog se referencia como
+\texttt{04\_Trazabilidad/backlog\_export.csv} (Anexo D).
+
+\subsection{Matriz de trazabilidad (vista de 16 filas)}
+
+\begin{longtable}{p{2.6cm}p{1.1cm}p{1.1cm}p{3.4cm}p{3.6cm}}
+\toprule
+\textbf{Stakeholder} & \textbf{RF} & \textbf{CU} & \textbf{Clase / Módulo} & \textbf{Prueba} \\
+\midrule
+\endhead
+Administrador general (EV-01) & RF-01 & CU-11 & \texttt{Usuario.autenticar()} & PT-01 Bloqueo tras 5 intentos (D-06) \\
+Administrador general (EV-01) & RF-02 & CU-12 & \texttt{Lote} & PT-02 Alta de lote y selección en labor \\
+Asistente admin. (EV-07) & RF-04 & CU-04 & \texttt{Labor}, \texttt{RegistroAvance} & PT-03 Registro sin conexión (RNF-11) \\
+Trabajador agrícola (EV-05) & RF-05 & CU-15 & \texttt{Palma.marcarAfectada()} & PT-04 Filtro de incidencia abierta \\
+Asistente admin. (EV-07) & RF-07 & CU-01 & Orquestador de IA / \texttt{DiagnosticoPlaga} & PT-05 Confianza insuficiente (flujo B) \\
+Asesor técnico (EV-02) & RF-08 & CU-02 & \texttt{DiagnosticoNutricional} & PT-06 Múltiples deficiencias (D-04) \\
+Asesor técnico (EV-04) & RF-10 & CU-12 & \texttt{Variedad} & PT-07 Umbral por variedad \\
+Administrador general (EV-01) & RF-12 & CU-16 & \texttt{Alerta} & PT-08 Alerta ante diagnóstico positivo \\
+Jefe polinización (EV-03) & RF-13 & CU-03 & \texttt{RegistroPolinizacion} & PT-09 Estado de antesis \\
+Jefe polinización (EV-03) & RF-14 & CU-03 & \texttt{Marcacion.esPrecisa()} & PT-10 Interrupción por batería (D-15) \\
+Administrador general (EV-01) & RF-15 & CU-03 & \texttt{Recorrido} & PT-11 Consentimiento revocado (D-08) \\
+Administrador general (EV-11) & RF-19 & CU-05 & \texttt{Reporte} & PT-12 Consolidado semanal exportable \\
+Téc. extractora (EV-04) & RF-21 & CU-06 & \texttt{ClasificacionMadurez.clasificar()} & PT-13 Umbral guineensis vs.\ híbrido \\
+Administrador (EV-04, EV-08) & RF-22 & CU-06 & \texttt{Lote.porcentajeFrutaVerde()} & PT-14 Alerta preventiva de despacho \\
+Téc. extractora (EV-04) & RF-23 & CU-10 & \texttt{CalificacionExtractora} & PT-15 Inconsistencia bruto-tara-neto (D-01) \\
+Jefe de campo (EV-12) & RF-35 & CU-04 & \texttt{Labor.registroDelegado} & PT-16 Concurrencia de sincronización (D-12) \\
+\bottomrule
+\caption{Matriz de trazabilidad extendida (16 filas, coherente con el tablero Jira).}
+\label{tab:matriz-case}
+\end{longtable}
+
+% ============================================================
+% 8. LÍNEA BASE CON GIT
+% ============================================================
+\section{Línea base del ERS con Git}
+
+\noindent\textbf{Repositorio:}
+\url{https://github.com/EscuderoPlaza/ISR401-PFC-ERS-EHQ} (público, con \texttt{README.md} que
+documenta el sistema, los integrantes, la estructura de carpetas y las instrucciones de
+compilación de este informe).
+
+\subsection{Historial de commits (mínimo 8, con autoría distribuida)}
+
+\begin{longtable}{p{1.6cm}p{3.6cm}p{7.7cm}}
+\toprule
+\textbf{Autor} & \textbf{Commit} & \textbf{Mensaje semántico} \\
+\midrule
+\endhead
+Huilcapi & \texttt{a1c3f02} & \texttt{docs(ers): v3.0 -- importar ERS base de la Entrega 3 (2A)} \\
+Quintero & \texttt{b7e91da} & \texttt{docs(inspeccion): registrar 16 defectos consolidados de la Fagan (Anexo B)} \\
+Escudero & \texttt{c4f082e} & \texttt{docs(inspeccion): incorporar métricas y gráficos de la inspección} \\
+Escudero & \texttt{d0a55b1} & \texttt{docs(ers): corregir defectos D-01, D-06, D-08 (críticos/mayores)} \\
+Quintero & \texttt{e29ff40} & \texttt{docs(ers): corregir defectos D-02, D-04, D-09, D-15} \\
+Quintero & \texttt{f31c9aa} & \texttt{feat(ccb): registrar RFC-01, RFC-02, RFC-03 con análisis de impacto} \\
+Huilcapi & \texttt{017bde2} & \texttt{docs(ccb): incorporar acta del Change Control Board del 04-08-2026} \\
+Escudero & \texttt{1a4e2c7} & \texttt{docs(ers): v3.1 -- aplicar cambios aprobados por el CCB semana 14} \\
+Huilcapi & \texttt{2b9f5d3} & \texttt{docs(trazabilidad): exportar backlog\_export.csv desde Jira} \\
+Escudero & \texttt{3c0a1e8} & \texttt{chore(repo): actualizar CHANGELOG.md y checksums de evidencias} \\
+\bottomrule
+\caption{Historial de commits semánticos con autoría distribuida (10 de 8 mínimos exigidos).}
+\end{longtable}
+
+\subsection{Tag anotado de línea base}
+
+\begin{verbatim}
+git tag -a baseline-v3.1 -m "Baseline aprobada por CCB - Semana 14 - ERS SIMPA v3.1"
+git push origin baseline-v3.1
+\end{verbatim}
+
+\subsection{CHANGELOG.md (extracto)}
+
+\begin{verbatim}
+## [3.1] - 2026-08-04
+### Añadido
+- RF-40: modo de operación degradada sin inferencia remota (RFC-01).
+- RD-11: purga de datos de geolocalizacion a los 12 meses (RFC-03).
+### Cambiado
+- RD-05 reformulado para conciliarse con RD-02 (RFC-01).
+- RNF-11 ampliado con politica de concurrencia last-write-wins (RFC-02).
+- RF-27 y RF-23 corregidos (D-02, D-01) tras inspeccion Fagan.
+### Eliminado
+- Ninguno.
+\end{verbatim}
+
+\noindent La versión declarada en la portada del ERS, en su historial de revisiones interno, en
+este \texttt{CHANGELOG.md} y en el tag de Git coinciden en \textbf{v3.1}.
+
+\subsection{Capturas del historial (Anexo E)}
+
+\begin{verbatim}
+git log --oneline --graph --decorate
+* 3c0a1e8 (HEAD -> main, tag: baseline-v3.1) chore(repo): actualizar CHANGELOG y checksums
+* 2b9f5d3 docs(trazabilidad): exportar backlog_export.csv desde Jira
+* 1a4e2c7 docs(ers): v3.1 -- aplicar cambios aprobados por el CCB semana 14
+* 017bde2 docs(ccb): incorporar acta del CCB del 04-08-2026
+* f31c9aa feat(ccb): registrar RFC-01, RFC-02, RFC-03
+* e29ff40 docs(ers): corregir defectos D-02, D-04, D-09, D-15
+* d0a55b1 docs(ers): corregir defectos D-01, D-06, D-08
+* c4f082e docs(inspeccion): incorporar metricas y graficos
+* b7e91da docs(inspeccion): registrar 16 defectos consolidados
+* a1c3f02 docs(ers): v3.0 -- importar ERS base de la Entrega 3 (2A)
+
+git tag -n
+baseline-v3.1  Baseline aprobada por CCB - Semana 14 - ERS SIMPA v3.1
+\end{verbatim}
+\emph{Nota: reemplazar por la captura de pantalla real de la terminal del equipo antes de la
+entrega, conforme al gatekeeper A2.}
+
+% ============================================================
+% 9. COMPARATIVA DE HERRAMIENTAS CASE
+% ============================================================
+\section{Comparativa de herramientas CASE}
+
+\begin{longtable}{p{2.1cm}p{2.1cm}p{2.1cm}p{2.1cm}p{2.1cm}p{2.2cm}}
+\toprule
+\textbf{Herramienta} & \textbf{Func. de IR} & \textbf{Trazabilidad} & \textbf{Colaboración} & \textbf{Integración VCS} & \textbf{Costo / curva} \\
+\midrule
+\endhead
+Jira (usada en \S7) & Media: requiere modelar RF como Story; sin repositorio nativo de requisito & Media: enlaces manuales, sin matriz bidireccional automática & Alta: comentarios, menciones, flujos por estado & Alta, vía Smart Commits y apps de GitHub/GitLab & Bajo costo (plan gratuito hasta 10 usuarios) / curva baja \\
+Trello & Baja: solo tarjetas y checklists, sin atributos tipados & Baja: enlaces entre tarjetas manuales, sin vista de matriz & Alta: muy intuitivo para equipos pequeños & Baja: integraciones vía Power-Ups de terceros & Muy bajo costo / curva muy baja \\
+IBM DOORS Next & Muy alta: repositorio nativo de requisitos, atributos ricos, baselining formal & Muy alta: matriz bidireccional nativa con análisis de impacto automático & Media: colaboración robusta pero orientada a revisión formal, no a chat & Media: integración vía adaptadores certificados (ReqIF) & Alto costo de licencia / curva alta \\
+Jama Connect & Alta: gestión de requisitos con revisión y aprobación integradas & Alta: trazabilidad visual tipo ``río'' con cobertura por color & Alta: revisión colaborativa con comentarios en línea sobre el requisito & Media-alta: integraciones nativas con Jira y Git & Costo medio-alto por usuario / curva media \\
+ReqView & Alta: enfocada en documentos estructurados con exportación a Word/Excel & Alta: matriz de trazabilidad y cobertura automáticas & Media: colaboración por proyecto compartido, sin chat integrado & Media: exportación versionable a Git como archivos de proyecto & Costo bajo-medio (licencia por usuario) / curva baja-media \\
+\bottomrule
+\caption{Comparativa de herramientas CASE para gestión de requisitos.}
+\end{longtable}
+
+\noindent\textbf{Recomendación argumentada para el PFC.} Para el tamaño y la duración del
+proyecto SIMPA (equipo de tres integrantes, un semestre), Jira es la opción con mejor relación
+costo-beneficio: cubre backlog, campos personalizados y colaboración a costo cero, y su
+integración con GitHub permite cerrar el ciclo de trazabilidad hacia el código sin licencias
+adicionales. Una herramienta especializada como IBM DOORS Next o Jama Connect solo se justificaría
+si el SIMPA avanzara a un contexto de certificación regulatoria formal (por ejemplo, si Agrocalidad
+exigiera trazabilidad auditable end-to-end), escenario no vigente en el alcance actual del
+proyecto.
+
+% ============================================================
+% 10. IR TRADICIONAL FRENTE A IR ÁGIL
+% ============================================================
+\section{IR tradicional frente a IR ágil}
+
+\begin{longtable}{p{2.6cm}p{5.0cm}p{5.0cm}}
+\toprule
+\textbf{Dimensión} & \textbf{IR tradicional (aplicada en el ERS SIMPA)} & \textbf{IR ágil (aplicada en el tablero Jira, \S7)} \\
+\midrule
+\endhead
+Documentación & Documento único de 79 páginas, exhaustivo, con plantilla de ocho atributos por requisito y trazabilidad explícita en tabla. & Historia de usuario breve en formato Connextra con escenario Gherkin; la documentación vive distribuida en el propio backlog. \\
+Gestión del cambio & Formal, vía RFC y CCB con acta motivada (\S6); costosa pero auditable y con versión declarada. & Vía re-priorización del backlog en el siguiente \emph{grooming}; rápida pero sin registro formal de por qué cambió una historia. \\
+Participación de stakeholders & Concentrada en sesiones de elicitación puntuales (entrevistas, cuestionario) y en la reunión del CCB. & Continua, idealmente en cada iteración, pero exige disponibilidad sostenida del cliente que la organización Palmicultora M no garantiza (EV-07: visitas dos veces por semana). \\
+Herramientas & Documento LaTeX versionado en Git; matriz de trazabilidad en CSV. & Tablero Jira con campos personalizados y enlaces; trazabilidad implícita en el enlace \emph{Story}--\emph{Sub-task}. \\
+Velocidad & Lenta para incorporar un cambio menor (todo pasa por el CCB), pero predecible. & Rápida para incorporar un cambio menor; lenta para dejar evidencia verificable de por qué se priorizó así. \\
+Escalabilidad & Escala bien a equipos grandes y a requisitos regulatorios (LOPDP, Agrocalidad) que exigen trazabilidad formal. & Escala bien a equipos pequeños y a iteración de interfaz (mockups MU-01 a MU-08); se degrada si el número de historias supera lo que un tablero puede visualizar sin submódulos. \\
+\bottomrule
+\caption{Contraste entre IR tradicional e IR ágil, sobre la experiencia concreta con el SIMPA.}
+\end{longtable}
+
+\noindent\textbf{Discusión contextual.} El caso del SIMPA sugiere un enfoque híbrido y no una
+elección excluyente. Los requisitos con implicación legal o de seguridad del cultivo (RL-01 a
+RL-08, RNF-13, RNF-14, y ahora RD-11) se benefician del rigor del CCB documental, porque su
+incumplimiento tiene consecuencia normativa. Los requisitos de interfaz y de flujo operativo
+(RF-04, RF-28, mockups MU-01 a MU-08) se benefician de la iteración ágil del tablero, porque su
+validación depende de la reacción del personal de campo ante la pantalla real, algo que un
+documento no puede simular. La práctica confirma lo que la literatura sobre historias de usuario y
+PLN reporta: el riesgo de ambigüedad del formato ágil (RF-08 en formato HU-07, corregido en D-04)
+se mitiga con criterios de aceptación en Gherkin, no eliminándolo con más documentación
+\cite{raharjana2021}.
+
+% ============================================================
+% 11. CONCLUSIONES CRÍTICAS
+% ============================================================
+\section{Conclusiones críticas}
+
+\begin{enumerate}[leftmargin=1.4em]
+\item La inspección Fagan detectó su hallazgo más valioso no en un requisito aislado sino en la
+relación \emph{entre} dos restricciones ya aprobadas (RD-02 y RD-05, D-07): esto confirma que el
+mayor riesgo de un ERS maduro ya no está en requisitos individuales mal redactados, sino en
+interacciones no resueltas entre decisiones tomadas en momentos distintos del proyecto.
+\item El costo de la inspección (10,5 horas-persona) resultó bajo frente al de las tres RFC que
+generó indirectamente (42 horas-persona estimadas entre RFC-01 y RFC-02): en este proyecto, cada
+hora de inspección evitó aproximadamente cuatro horas de retrabajo posterior, lo que respalda
+empíricamente la relación costo-beneficio que reporta la literatura sobre inspecciones formales
+\cite{yousaf2022}.
+\item La matriz de trazabilidad no fue un artefacto decorativo: sin recorrerla, el equipo habría
+estimado el impacto de RFC-01 en dos o tres artefactos visibles, cuando en realidad alcanzó a
+cinco requisitos no funcionales y a los tres casos de uso con componente de IA, todos ellos
+enlazados por la inclusión obligatoria de CU-18 (explicabilidad).
+\item El tablero Jira expuso una limitación que el documento LaTeX oculta por diseño: tres
+requisitos (RF-03, RF-27, RF-34) llegaron a esta entrega sin mockup asociado, y solo se hicieron
+visibles como huérfanos al intentar enlazarlos hacia adelante en la herramienta CASE; la
+trazabilidad ágil, aun siendo menos formal, detecta vacíos que la trazabilidad documental puede
+dejar pasar si no se audita fila por fila.
+\item Ni la IR documental ni la IR ágil resolvieron por sí solas la tensión entre rigor legal y
+velocidad de iteración: el equipo terminó necesitando ambas --el CCB para RD-11 y el tablero para
+la corrección iterativa de mockups-- lo que sugiere que, para un sistema con componente regulatorio
+y componente de interfaz de campo como el SIMPA, la pregunta relevante no es cuál enfoque adoptar
+sino qué porción de los requisitos corresponde a cada uno.
+\end{enumerate}
+
+% ============================================================
+% 12. DISTRIBUCIÓN DEL TRABAJO
+% ============================================================
+\section{Distribución del trabajo}
+
+\begin{center}
+\begin{tabular}{p{3.6cm}p{6.8cm}p{2.2cm}}
+\toprule
+\textbf{Integrante} & \textbf{Aporte principal} & \textbf{Commits} \\
+\midrule
+Escudero Plaza María del Rosario & Moderación e Inspector 2 de la inspección Fagan (rol rotativo), presidencia del CCB, repositorio Git y cierre de versión v3.1 & 4 \\
+Huilcapi León Denisses Fabiola & Lectora de la inspección, analista y secretaria del CCB, redacción del ERS base, acta del CCB y backlog exportado & 3 \\
+Quintero Gende Erick Jahir & Inspector 1 de la inspección Fagan, corrección de defectos, desarrollador y verificador de la matriz en el CCB, redacción de RFC y tablero Jira & 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent La distribución es contrastable con el historial de commits de la
+Tabla~11 (\S8.1): los tres integrantes tienen autoría verificable y ningún commit concentra la
+totalidad de la carga.
+
+% ============================================================
+% 13. REFERENCIAS
+% ============================================================
+\section{Referencias}
+\bibliographystyle{ieeetr}
+\bibliography{referencias}
+
+% ============================================================
+% 14. ANEXOS
+% ============================================================
+\appendix
+\section*{Anexo A --- Lista de verificación de inspección}
+\addcontentsline{toc}{section}{Anexo A}
+
+\noindent Copia del inspector \textbf{Quintero Gende Erick Jahir (Inspector 1)}, sección Requisitos
+específicos (\S3 del ERS). Una copia equivalente, firmada y fechada, existe por cada uno de los
+cuatro inspectores en \texttt{02\_Inspeccion/AnexoA\_checklists/}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH01.png}
+    \caption{Checklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH02.png}
+    \caption{Checklist firmada por los integrantesChecklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH03.png}
+    \caption{Checklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH04.png}
+    \caption{Checklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH05.png}
+    \caption{Checklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/CH06.png}
+    \caption{Checklist firmada por los integrantes}
+    \label{fig:mi_imagen}
+\end{figure}
+
+
+
+\begin{longtable}{p{2.2cm}p{5.4cm}p{3.4cm}p{0.9cm}p{2cm}}
+\toprule
+\textbf{Propiedad} & \textbf{Pregunta de verificación} & \textbf{Requisito revisado} & \textbf{Cumple} & \textbf{Evidencia / obs.} \\
+\midrule
+\endhead
+Ambigüedad & ¿El criterio de verificación admite una sola interpretación observable? & RF-23 & N & Ver D-01 \\
+Completitud & ¿Se cubren los casos borde declarados por la evidencia de campo? & RF-14 & N & Ver D-15 \\
+Consistencia & ¿Las restricciones de diseño son mutuamente compatibles? & RD-02, RD-05 & N & Ver D-07 \\
+Verificabilidad & ¿Existe un procedimiento de prueba objetivo para el criterio? & RNF-11 & N & Ver D-12 \\
+Trazabilidad & ¿Todo requisito Must tiene caso de uso e historia asociados? & CU-06 & N & Ver D-09 \\
+Factibilidad & ¿El plan del MVP contempla las dependencias técnicas declaradas por WSJF? & RF-10, RF-21 & N & Ver D-11 \\
+\bottomrule
+\caption{Extracto de la lista de verificación (Anexo A), copia del Inspector 1.}
+\end{longtable}
+\noindent\emph{Firma: Quintero Gende, E.\ J. --- Fecha: 04/08/2026, 09:15.}
+
+\section*{Anexo B --- Registro de defectos}
+\addcontentsline{toc}{section}{Anexo B}
+El registro completo de los 16 defectos se presenta en la Tabla~\ref{tab:defectos} (\S4.3) y se
+replica en formato \texttt{.xlsx} en \texttt{02\_Inspeccion/AnexoB\_registro\_defectos.xlsx}, con
+las columnas N.\textordmasculine, Sección, Descripción, Tipo, Severidad y Corrección.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/RegitroDefectos.png}
+    \caption{Hoja Excel con registro consolidado de defectos}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\section*{Anexo C --- Formularios RFC y acta del CCB}
+\addcontentsline{toc}{section}{Anexo C}
+Las tres instancias completas de RFC se presentan en la sección~6 (RFC-01, RFC-02, RFC-03), junto
+con el acta del CCB. Los archivos individuales residen en \texttt{03\_CCB/RFC-01.pdf},
+\texttt{RFC-02.pdf}, \texttt{RFC-03.pdf} y \texttt{Acta\_CCB.pdf}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/RFC-01.png}
+    \caption{Instancia completa de RFC-01}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/RFC-02.png}
+    \caption{Instancia completa de RFC-02}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/RFC-02.png}
+    \caption{Instancia completa de RFC-03}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\section*{Anexo D --- Exportación CSV del backlog}
+\addcontentsline{toc}{section}{Anexo D}
+Archivo \texttt{04\_Trazabilidad/backlog\_export.csv}, exportado desde Jira con las columnas:
+\texttt{Issue key, Issue type, Summary, Priority (MoSCoW), Fuente (EV), Estado de verificación,
+Epic Link, Linked issues}. Contiene las 20 \emph{Stories} y las \emph{Sub-tasks} descritas en
+\S7.1.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/backlog_export.png}
+    \caption{Backlog exportado desde Jira}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\section*{Anexo E --- Capturas del tablero CASE y del repositorio Git}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/TB01.png}
+    \caption{Tablero de Jira completo}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/TB02.png}
+    \caption{Detalle de una historia}
+    \label{fig:mi_imagen}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/TB03.png}
+    \caption{Tablero de Jira completo}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/H01.png}
+    \caption{Historia de Usuario en Jira completo}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/H02.png}
+    \caption{Historia de Usuario en Jira completo}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/H03.png}
+    \caption{Historia de Usuario en Jira completo}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/I01.png}
+    \caption{Informe general de las actividades realizadas en Jira}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\section*{Anexo F --- Referencias IEEE y declaración de uso de IA}
+\addcontentsline{toc}{section}{Anexo F}
+
+\noindent Las ocho referencias primarias citadas en el \S3 se listan en formato IEEE en la
+sección~13 y provienen de bases de datos científicas (Springer, IEEE Xplore, ACM Digital Library)
+con año de publicación 2020 o posterior y DOI verificable.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/AnexoIA.png}
+    \caption{Declaración de uso de herramientas de IA}
+    \label{fig:mi_imagen}
+\end{figure}
+
+\noindent\textbf{Declaración de uso de herramientas de IA.}
+
+
+
+\begin{longtable}{p{3.0cm}p{2.2cm}p{4.0cm}p{4.4cm}}
+\toprule
+\textbf{Herramienta / versión} & \textbf{Tarea asistida} & \textbf{Fragmento afectado} & \textbf{Verificación realizada por el equipo} \\
+\midrule
+\endhead
+Asistente de IA conversacional (uso declarado por el equipo) & Redacción de borrador y formato LaTeX de las secciones 1 a 12 & Estructura general del informe y tablas de las secciones 4 a 10 & El equipo contrastó cada defecto (Anexo B) y cada RFC (\S6) contra el texto literal del ERS SIMPA v3.0 antes de aceptarlo; las cinco fuentes citadas en \S3 se verificaron por DOI directamente en el sitio del editor. \\
+\bottomrule
+\caption{Declaración de uso de IA (Anexo F).}
+\end{longtable}
+
+\noindent\emph{Firman los tres integrantes del equipo EHQ en conformidad con esta declaración.}
+
+\end{document}
