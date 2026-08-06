@@ -5,6 +5,7 @@ validación, gestión de requisitos y herramientas CASE, aplicadas sobre la ERS 
 **SIMPA**.
 
 - **Repositorio:** <https://github.com/equinteroj/ISR401-PFC-ERS-EQUIPO-I>
+- **Link Proyecto en Jira:** <https://equipo-i.atlassian.net/jira/software/projects/KAN/boards/1?filter=&groupBy=epic&atlOrigin=eyJpIjoiYWJiMWI1ZjA2NGEzNGM3Yjg2MmVhNmI2MTFjZGRiYjMiLCJwIjoiaiJ9>
 - **Línea base:** `baseline-v3.1` (ERS v3.1 / v1.1 de la rúbrica, aprobada por el CCB el 04-08-2026)
 - **Institución:** Universidad Técnica Estatal de Quevedo — Facultad de Ciencias de la Computación
 - **Asignatura / curso:** Ingeniería de Requerimientos — 4.º "A" Software
